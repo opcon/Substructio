@@ -9,6 +9,9 @@ namespace Substructio.Core.Math
 {
     public class PolarVector
     {
+        private const double AngleRangeStart = 0;
+        private const double AngleRangeEnd = MathUtilities.TwoPI;
+
         public double Radius { get; set; }
         public double Azimuth { get; set; }
 
@@ -26,13 +29,28 @@ namespace Substructio.Core.Math
 
         public Vector2 ToCartesianCoordinates()
         {
-            //return new Vector2((float)(Radius * System.Math.Cos(Azimuth)), (float)(Radius * System.Math.Sin(Azimuth)));
             return PolarVector.ToCartesianCoordinates(this);
         }
 
         public static Vector2 ToCartesianCoordinates(PolarVector polarVector)
         {
-            return new Vector2((float)(polarVector.Radius * System.Math.Cos(polarVector.Azimuth)), (float)(polarVector.Radius * System.Math.Sin(polarVector.Azimuth)));
+            return ToCartesianCoordinates(polarVector, 0, 0);
+        }
+
+        public PolarVector Normalised()
+        {
+            return NormaliseAngle(this);
+        }
+
+        public static PolarVector NormaliseAngle(PolarVector p)
+        {
+            p.Azimuth = MathUtilities.Normalise(p.Azimuth, AngleRangeStart, AngleRangeEnd);
+            return p;
+        }
+
+        public static Vector2 ToCartesianCoordinates(PolarVector polarVector, double dAzimuth, double dRadius)
+        {
+           return new Vector2((float)((polarVector.Radius+dRadius) * System.Math.Cos(polarVector.Azimuth+dAzimuth)), (float)((polarVector.Radius+dRadius) * System.Math.Sin(polarVector.Azimuth+dAzimuth))); 
         }
     }
 }
