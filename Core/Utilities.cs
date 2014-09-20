@@ -7,8 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using ColorMine.ColorSpaces;
 
 namespace Substructio.Core
 {
@@ -99,6 +101,17 @@ namespace Substructio.Core
             b.UnlockBits(bd);
             b.RotateFlip(RotateFlipType.RotateNoneFlipY);
             return b;
+        }
+
+        public static Color4 ColorSpaceToColor4(IColorSpace col)
+        {
+            var rgb = col.ToRgb();
+            return new Color4((byte)rgb.R, (byte)rgb.G, (byte)rgb.B, 255);
+        }
+
+        public static IColorSpace Color4ToColorSpace(Color4 col)
+        {
+            return new Rgb() {B = col.B*255, G = col.G*255, R = col.R*255};
         }
     }
 }
