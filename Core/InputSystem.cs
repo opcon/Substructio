@@ -43,12 +43,12 @@ namespace Substructio.Core
 		{
 			if (Focused) {
 
+				if (!NewKeys.Contains(e.Key) && !CurrentKeys.Contains(e.Key)) {
+					NewKeys.Add(e.Key);
+				} 
 				if (!CurrentKeys.Contains(e.Key)) {
 					CurrentKeys.Add(e.Key);
 				}
-				if (!NewKeys.Contains(e.Key)) {
-					NewKeys.Add(e.Key);
-				} 
 			}
 		}
 
@@ -57,7 +57,11 @@ namespace Substructio.Core
 			if (Focused) {
 				if (CurrentKeys.Contains(e.Key)) {
 					CurrentKeys.Remove(e.Key);
-				} 
+				}
+                //if (NewKeys.Contains(e.Key))
+                //{
+                //    NewKeys.Remove(e.Key);
+                //}
 			}
 		}
 
@@ -105,7 +109,7 @@ namespace Substructio.Core
 			PressedChars.Clear();
 			PressedButtons.Clear();
 			UnHandledButtons.Clear();
-			NewKeys.Clear();
+            NewKeys.Clear();
 			//LastButtons = new List<MouseButton>(CurrentButtons);
 			//CurrentButtons.Clear();
 		}
