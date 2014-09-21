@@ -109,12 +109,13 @@ namespace Substructio.GUI
             InputSystem.Update(GameWindow.Focused);
         }
 
-        public void DrawTextLine(string text, Vector2 position)
+        public void DrawTextLine(string text, Vector2 position, QFont font = null)
         {
+            if (font == null) font = Font;
             Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
 
-            Font.Options.Colour = Color4.Black;
-            Font.Print(text);
+            font.Options.Colour = Color4.Black;
+            font.Print(text);
         }
 
         public void DrawProcessedText(ProcessedText pText, Vector2 position, QFont font)
