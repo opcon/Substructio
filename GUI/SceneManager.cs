@@ -115,7 +115,7 @@ namespace Substructio.GUI
             Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
 
             font.Options.Colour = Color4.Black;
-            font.Print(text);
+            font.Print(text, QFontAlignment.Centre);
         }
 
         public void DrawProcessedText(ProcessedText pText, Vector2 position, QFont font)
