@@ -27,6 +27,9 @@ namespace Substructio.GUI
         public GameWindow GameWindow { get; private set; }
         public string FontPath { get; private set; }
 
+        private float _rotation;
+        private int _direction = 1;
+
         #endregion
 
         #region Constructors

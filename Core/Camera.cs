@@ -102,8 +102,8 @@ namespace Substructio.Core
             else
             {
                 WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * Scale.X, PreferredHeight * Scale.Y,
-                                                                   -1.0f, 1.0f);
-                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -1.0f, 1.0f);
+                                                                   -1000.0f, 1000.0f);
+                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -10.0f, 10.0f);
             }
 
 
@@ -114,9 +114,15 @@ namespace Substructio.Core
         {
             Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + 0.375f, WorldTranslation.Y + 0.375f, 0);
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
+            
 
             trans = Matrix4.CreateTranslation(InitialTranslation.X + 0.375f, InitialTranslation.Y + 0.375f, 0);
             ScreenModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
+        }
+
+        public void RotateX(float amount)
+        {
+            WorldModelViewMatrix = Matrix4.Mult(Matrix4.CreateRotationX(amount), WorldModelViewMatrix);
         }
 
         public void UpdateTargetTranslation()
