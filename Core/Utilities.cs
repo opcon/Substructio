@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using ColorMine.ColorSpaces;
 
@@ -96,7 +96,7 @@ namespace Substructio.Core
 
             var bd = b.LockBits(new Rectangle(0, 0, g.Width, g.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
+            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL4.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
 
             b.UnlockBits(bd);
             b.RotateFlip(RotateFlipType.RotateNoneFlipY);
