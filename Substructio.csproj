@@ -61,6 +61,12 @@
     <Compile Include="Core\Math\MathUtilities.cs" />
     <Compile Include="Core\Math\PolarVector.cs" />
     <Compile Include="Core\Polygon.cs" />
+    <Compile Include="Graphics\OpenGL\BindeableObject.cs" />
+    <Compile Include="Graphics\OpenGL\Buffer.cs" />
+    <Compile Include="Graphics\OpenGL\ShaderProgram.cs" />
+    <Compile Include="Graphics\OpenGL\Shader.cs" />
+    <Compile Include="Graphics\OpenGL\VertexArray.cs" />
+    <Compile Include="Graphics\OpenGL\VertexBuffer.cs" />
     <Compile Include="GUI\GUICallbackEventArgs.cs" />
     <Compile Include="GUI\Scene.cs" />
     <Compile Include="GUI\SceneManager.cs" />
