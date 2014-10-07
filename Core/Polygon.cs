@@ -340,20 +340,20 @@ namespace Substructio.Core
 
         public void Draw()
         {
-            if (Points == null || Points.Count == 0) return;
-            //Begin((int)SpritePosition.X, (int)SpritePosition.Y, Width, Height, false);
-            GL.Disable(EnableCap.Texture2D);
-            GL.Begin(BeginMode.LineStrip);
-            Color4 cl = Color4.Black;
-            GL.Color4(cl);
+            //if (Points == null || Points.Count == 0) return;
+            ////Begin((int)SpritePosition.X, (int)SpritePosition.Y, Width, Height, false);
+            //GL.Disable(EnableCap.Texture2D);
+            //GL.Begin(BeginMode.LineStrip);
+            //Color4 cl = Color4.Black;
+            //GL.Color4(cl);
 
-            foreach (Vector2 point in Points)
-            {
-                GL.Vertex2(point);
-            }
-            GL.Vertex2(Points[0]);
-            GL.End();
-            GL.Enable(EnableCap.Texture2D);
+            //foreach (Vector2 point in Points)
+            //{
+            //    GL.Vertex2(point);
+            //}
+            //GL.Vertex2(Points[0]);
+            //GL.End();
+            //GL.Enable(EnableCap.Texture2D);
         }
 
         #region Nested type: PolygonCollisionResult

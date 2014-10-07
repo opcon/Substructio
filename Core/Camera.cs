@@ -75,6 +75,11 @@ namespace Substructio.Core
             PreferredHeight = prefHeight;
         }
 
+        public Matrix4 ModelViewProjection
+        {
+            get { return Matrix4.Mult(WorldModelViewMatrix, WorldProjectionMatrix); }
+        }
+
         public void UpdateResize(float wWidth, float wHeight)
         {
             //ScreenSpaceMax = new Vector2(pWidth, pHeight);
@@ -375,28 +380,28 @@ namespace Substructio.Core
 
         public void EnableWorldDrawing()
         {
-            //Save matrix state
-            GL.MatrixMode(MatrixMode.Projection);
-            //GL.PushMatrix();
-            GL.LoadIdentity();
+            ////Save matrix state
+            //GL.MatrixMode(MatrixMode.Projection);
+            ////GL.PushMatrix();
+            //GL.LoadIdentity();
 
-            GL.LoadMatrix(ref WorldProjectionMatrix);
+            //GL.LoadMatrix(ref WorldProjectionMatrix);
 
-            //Save matrix state
-            GL.MatrixMode(MatrixMode.Modelview);
-            //GL.PushMatrix();
-            GL.LoadIdentity();
+            ////Save matrix state
+            //GL.MatrixMode(MatrixMode.Modelview);
+            ////GL.PushMatrix();
+            //GL.LoadIdentity();
 
-            GL.LoadMatrix(ref WorldModelViewMatrix);
+            //GL.LoadMatrix(ref WorldModelViewMatrix);
         }
 
         public void EnableScreenDrawing()
         {
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref ScreenProjectionMatrix);
+            //GL.MatrixMode(MatrixMode.Projection);
+            //GL.LoadMatrix(ref ScreenProjectionMatrix);
 
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref ScreenModelViewMatrix);
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.LoadMatrix(ref ScreenModelViewMatrix);
         }
     }
 }

@@ -71,6 +71,7 @@
     <Compile Include="GUI\Scene.cs" />
     <Compile Include="GUI\SceneManager.cs" />
     <Compile Include="Core\Utilities.cs" />
+    <Compile Include="IO\ASCIIFileHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

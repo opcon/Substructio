@@ -34,9 +34,27 @@ namespace Substructio.Graphics.OpenGL
                     GL.VertexAttribPointer(VAOProgram.AttributeLocation(spec.Name), spec.Count, spec.Type, spec.ShouldBeNormalised, spec.Stride, spec.Offset);
                     GL.EnableVertexAttribArray(VAOProgram.AttributeLocation(spec.Name));
                 }
-                vertexBuffer.UnBind();
+                //vertexBuffer.UnBind();
             }
             
+        }
+
+        public void Draw(double time)
+        {
+            Bind();
+
+            foreach (var buffer in Buffers)
+            {
+                buffer.Bind();
+            }
+            GL.DrawArrays(PrimitiveType.Quads, 0, Buffers.Min(b => b.DrawableIndices));
+            //GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 6);
+            foreach (var buffer in Buffers)
+            {
+                buffer.UnBind();
+            }
+
+            UnBind();
         }
 
         public override void Bind()
@@ -58,6 +76,11 @@ namespace Substructio.Graphics.OpenGL
         public override void Create()
         {
             ID = GL.GenVertexArray();
+        }
+
+        public void Load(ShaderProgram program, params VertexBuffer[] buffers)
+        {
+            Load(program, (IEnumerable<VertexBuffer>)buffers);
         }
     }
 }

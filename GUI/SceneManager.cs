@@ -115,7 +115,7 @@ namespace Substructio.GUI
         public void DrawTextLine(string text, Vector2 position, QFont font = null)
         {
             if (font == null) font = Font;
-            Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
+            //Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
 
             font.Options.Colour = Color4.Black;
             font.Print(text, QFontAlignment.Centre);
@@ -123,7 +123,7 @@ namespace Substructio.GUI
 
         public void DrawProcessedText(ProcessedText pText, Vector2 position, QFont font)
         {
-            Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
+            //Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
 
             font.Print(pText);
         }

@@ -13,13 +13,13 @@ namespace Substructio.Graphics.OpenGL
     {
         public BufferTarget BufferType { get; protected set; }
 
-        public BufferUsageHint BufferUsage { get; protected set; }
+        public BufferUsageHint BufferUsage { get; set; }
 
-        public int MaxSize { get; protected set; }
+        public int MaxSize { get; set; }
 
         public bool Initialised { get; protected set; }
 
-        public List<BufferDataSpecification> DataSpecifications { get; private set; } 
+        public List<BufferDataSpecification> DataSpecifications { get; private set; }
 
         public Buffer()
         {
@@ -48,19 +48,33 @@ namespace Substructio.Graphics.OpenGL
             Initialised = true;
         }
 
-        public virtual void AddData<T>(IEnumerable<T> data, BufferDataSpecification spec) where T : struct
+        public void AddSpec(BufferDataSpecification spec)
         {
             if (!DataSpecifications.Contains(spec))
             {
-                SetData(data, spec.Offset);
                 DataSpecifications.Add(spec);
             }
+        }
+
+        //public virtual void AddData<T>(IEnumerable<T> data, BufferDataSpecification spec) where T : struct
+        //{
+        //    if (!DataSpecifications.Contains(spec))
+        //    {
+        //        SetData(data, spec.Offset);
+        //        DataSpecifications.Add(spec);
+        //    }
+        //}
+
+        public void SetData<T>(IEnumerable<T> data, BufferDataSpecification spec) where T : struct
+        {
+            SetData(data, spec.Offset);
         }
 
         public void SetData<T>(IEnumerable<T> data, int offset) where T : struct
         {
             var t = default(T);
-            var size = Marshal.SizeOf(t);
+            var size = Marshal.SizeOf(t) * data.Count();
+            var test = data.ToArray();
             SetData(data, offset, size);
         }
 

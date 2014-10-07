@@ -39,15 +39,15 @@ namespace Substructio.Core
             return s.Trim();
         }
 
-        public static void TranslateTo(Vector2 position, float width, float height)
-        {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
+        //public static void TranslateTo(Vector2 position, float width, float height)
+        //{
+        //    //GL.MatrixMode(MatrixMode.Modelview);
+        //    //GL.LoadIdentity();
 
-            GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
+        //    //GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
 
-            GL.Scale(1, -1, 1);
-        }
+        //    //GL.Scale(1, -1, 1);
+        //}
 
         // Handles IPv4 and IPv6 notation.
         public static IPEndPoint CreateIPEndPoint(string endPoint)

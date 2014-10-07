@@ -9,6 +9,7 @@ namespace Substructio.Graphics.OpenGL
 {
     public class VertexBuffer : Buffer
     {
+        public int DrawableIndices { get; set; }
         public VertexBuffer()
         {
             BufferType = BufferTarget.ArrayBuffer;

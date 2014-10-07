@@ -14,9 +14,26 @@ namespace Substructio.Graphics.OpenGL
         public string Source { get; private set; }
         public string Name { get; private set; }
 
+        public Shader(string path)
+        {
+            Load(path);
+        }
+
+        public Shader(string path, ShaderType type)
+        {
+            Load(path, type);
+        }
+
+        public Shader(string source, string name, ShaderType type)
+        {
+            Load(source, name, type);
+        }
+
         public void Load(string path, ShaderType type)
         {
-            throw new NotImplementedException();
+            var source = IO.ASCIIFileHelper.ReadFileToEnd(path);
+            var name = Path.GetFileNameWithoutExtension(path);
+            Load(source, name, type);
         }
 
         public void Load(string path)
