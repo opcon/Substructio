@@ -12,9 +12,12 @@ namespace Substructio.Graphics.OpenGL
         public ShaderProgram VAOProgram { get; private set; }
         public List<VertexBuffer> Buffers { get; private set; } 
 
+        public PrimitiveType DrawPrimitiveType { get; set; }
+
         public VertexArray()
         {
             Create();
+            DrawPrimitiveType = PrimitiveType.Quads;
         }
 
         public void Load(ShaderProgram program, IEnumerable<VertexBuffer> buffers)
@@ -41,20 +44,24 @@ namespace Substructio.Graphics.OpenGL
 
         public void Draw(double time)
         {
+            Draw(time, 0, Buffers.Min(b => b.DrawableIndices));
+        }
+
+        public void Draw(double time, int start, int count)
+        {
             Bind();
 
             foreach (var buffer in Buffers)
             {
                 buffer.Bind();
             }
-            GL.DrawArrays(PrimitiveType.Quads, 0, Buffers.Min(b => b.DrawableIndices));
-            //GL.DrawArrays(PrimitiveType.TriangleStrip, 0, 6);
+            GL.DrawArrays(DrawPrimitiveType, start, count);
             foreach (var buffer in Buffers)
             {
                 buffer.UnBind();
             }
 
-            UnBind();
+            UnBind(); 
         }
 
         public override void Bind()
