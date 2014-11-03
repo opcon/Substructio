@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
@@ -29,6 +30,9 @@ namespace Substructio.GUI
 
         private float _rotation;
         private int _direction = 1;
+
+        public int Width {get { return GameWindow.Width; }}
+        public int Height {get { return GameWindow.Height; }}
 
         #endregion
 
