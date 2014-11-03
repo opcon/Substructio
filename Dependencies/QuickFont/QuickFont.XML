@@ -66,10 +66,26 @@
             The configuraiton used when loading a font from a qfont file.
             </summary>
         </member>
-        <member name="T:QuickFont.FontLoadDescription">
+        <member name="M:QuickFont.Helper.SafeGLBegin(OpenTK.Graphics.OpenGL.BeginMode,System.Action)">
             <summary>
-            Describes how a font was loaded so that it can be reloaded
+            Ensures GL.End() is called
             </summary>
+            <param name="mode"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:QuickFont.Helper.SafeGLEnable(OpenTK.Graphics.OpenGL.EnableCap,System.Action)">
+            <summary>
+            Ensures that state is disabled
+            </summary>
+            <param name="cap"></param>
+            <param name="code"></param>
+        </member>
+        <member name="M:QuickFont.Helper.SafeGLEnable(OpenTK.Graphics.OpenGL.EnableCap[],System.Action)">
+            <summary>
+            Ensures that multiple states are disabled
+            </summary>
+            <param name="cap"></param>
+            <param name="code"></param>
         </member>
         <member name="M:QuickFont.QBitmap.EmptyPixel(System.Drawing.Imaging.BitmapData,System.Int32,System.Int32)">
             <summary>
@@ -105,14 +121,6 @@
             <param name="g"></param>
             <param name="b"></param>
         </member>
-        <member name="M:QuickFont.QFont.Reload">
-            <summary>
-            Reloads the font using the original loader/builder options. This may be useful if the underlying
-            files change, or, more commonly, if the "TransformToCurrentOrthogProjection" option was used when
-            creating the font, and the orthog projection has since changed (e.g. resizing the window). This 
-            will do nothing for fonts created directly from a Font object.
-            </summary>
-        </member>
         <member name="M:QuickFont.QFont.OrthogonalTransform(System.Single@)">
             <summary>
             When TransformToOrthogProjection is enabled, we need to get the current orthogonal transformation,
@@ -133,7 +141,7 @@
             it onto the stack
             </summary>
         </member>
-        <member name="M:QuickFont.QFont.Measure(System.String,System.Single,QuickFont.QFontAlignment)">
+        <member name="M:QuickFont.QFont.Measure(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
             <summary>
             Measures the actual width and height of the block of text.
             </summary>
@@ -178,7 +186,7 @@
             <param name="boundWidth"></param>
             <returns></returns>
         </member>
-        <member name="M:QuickFont.QFont.Print(System.String,System.Single,QuickFont.QFontAlignment)">
+        <member name="M:QuickFont.QFont.Print(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
             <summary>
             Prints text inside the given bounds.
             </summary>
@@ -186,7 +194,7 @@
             <param name="bounds"></param>
             <param name="alignment"></param>
         </member>
-        <member name="M:QuickFont.QFont.ProcessText(System.String,System.Single,QuickFont.QFontAlignment)">
+        <member name="M:QuickFont.QFont.ProcessText(System.String,System.Drawing.SizeF,QuickFont.QFontAlignment)">
             <summary>
             Creates node list object associated with the text.
             </summary>
@@ -200,36 +208,12 @@
             </summary>
             <param name="processedText"></param>
         </member>
-        <member name="M:QuickFont.QFont.InvalidateViewport">
+        <member name="M:QuickFont.QFont.RefreshViewport">
             <summary>
             Invalidates the internally cached viewport, causing it to be 
             reread the next time it is required. This should be called
             if the viewport and text is to be rendered to the new 
             viewport.
-            </summary>
-        </member>
-        <member name="M:QuickFont.QFont.ForceViewportRefresh">
-            <summary>
-            Forces the current viewport used by QFont to be read 
-            from "hardware"
-            </summary>
-        </member>
-        <member name="M:QuickFont.QFont.PushSoftwareViewport(QuickFont.Viewport)">
-            <summary>
-            Use a new viewport. This is more efficient 
-            than calling ForceViewportRefresh() or InvalidateViewport()
-            </summary>
-            <param name="viewport"></param>
-        </member>
-        <member name="M:QuickFont.QFont.PopSoftwareViewport">
-            <summary>
-            Pops the last pushed viewport, returning
-            to the previous viewport in use
-            </summary>
-        </member>
-        <member name="M:QuickFont.QFont.Dispose">
-            <summary>
-            Dispose of the QFont data.
             </summary>
         </member>
         <member name="T:QuickFont.Builder">
@@ -353,13 +337,6 @@
         <member name="F:QuickFont.QFontData.naturallyMonospaced">
             <summary>
             Whether the original font (from ttf) was detected to be monospaced
-            </summary>
-        </member>
-        <member name="F:QuickFont.QFontData.scaleDueToTransformToViewport">
-            <summary>
-            The font scaling due to the font being transformed to the
-            current viewport for consistent pixel-perfect size across
-            any resolution
             </summary>
         </member>
         <member name="M:QuickFont.QFontData.GetKerningPairCorrection(System.Int32,System.String,QuickFont.TextNode)">
@@ -557,6 +534,11 @@
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.DstAlpha);
             before rendering text.
             
+            </summary>
+        </member>
+        <member name="F:QuickFont.QFontRenderOptions.WordWrap">
+            <summary>
+            Wrap word to next line if max width hit
             </summary>
         </member>
         <member name="F:QuickFont.QFontRenderOptions.JustifyCapExpand">

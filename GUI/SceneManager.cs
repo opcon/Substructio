@@ -45,6 +45,7 @@ namespace Substructio.GUI
             _scenesToRemove = new List<Scene>();
             FontPath = fontPath;
             Font = font;
+            Font.ProjectionMatrix = camera.ScreenProjectionMatrix;
             //Font = new QFont(Directories.LibrariesDirectory + Directories.TextFile, 18);
             ScreenCamera = camera;
             ScreenCamera.Center = Vector2.Zero;
@@ -57,6 +58,7 @@ namespace Substructio.GUI
 
         public void Draw(double time)
         {
+            Font.ResetVBOs();
             Scene excl = SceneList.Where(scene => scene.Visible).FirstOrDefault(scene => scene.Exclusive);
             if (excl == null)
             {
@@ -69,6 +71,7 @@ namespace Substructio.GUI
             {
                 excl.Draw(time);
             }
+            Font.Draw();
         }
 
         public void Update(double time)
@@ -112,20 +115,14 @@ namespace Substructio.GUI
             InputSystem.Update(GameWindow.Focused);
         }
 
-        public void DrawTextLine(string text, Vector2 position, QFont font = null)
+        public void DrawTextLine(string text, Vector3 position, Color4 colour)
         {
-            if (font == null) font = Font;
-            //Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
-
-            font.Options.Colour = Color4.Black;
-            font.Print(text, QFontAlignment.Centre);
+            Font.Print(text, position, QFontAlignment.Centre, (Color)colour);
         }
 
-        public void DrawProcessedText(ProcessedText pText, Vector2 position, QFont font)
+        public void DrawProcessedText(ProcessedText pText, Vector3 position, Color4 colour)
         {
-            //Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
-
-            font.Print(pText);
+            Font.Print(pText, position, (Color)colour);
         }
 
         private void AddRemoveScenes()
@@ -147,6 +144,7 @@ namespace Substructio.GUI
         public void Resize(EventArgs e)
         {
             ScreenCamera.UpdateResize(GameWindow.Width, GameWindow.Height);
+            Font.ProjectionMatrix = ScreenCamera.ScreenProjectionMatrix;
             foreach (Scene scene in SceneList)
             {
                 scene.Resize(e);

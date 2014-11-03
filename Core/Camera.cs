@@ -73,6 +73,8 @@ namespace Substructio.Core
             UpdateResize(windowWidth, windowHeight);
             PreferredWidth = prefWidth;
             PreferredHeight = prefHeight;
+
+            UpdateProjectionMatrix();
         }
 
         public Matrix4 ModelViewProjection
@@ -89,6 +91,8 @@ namespace Substructio.Core
             WindowHeight = wHeight;
             PreferredWidth = wWidth;
             PreferredHeight = wHeight;
+
+            UpdateProjectionMatrix();
         }
 
         #endregion
