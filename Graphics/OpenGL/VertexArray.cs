@@ -17,7 +17,7 @@ namespace Substructio.Graphics.OpenGL
         public VertexArray()
         {
             Create();
-            DrawPrimitiveType = PrimitiveType.Quads;
+            DrawPrimitiveType = PrimitiveType.Triangles;
         }
 
         public void Load(ShaderProgram program, IEnumerable<VertexBuffer> buffers)
