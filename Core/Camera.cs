@@ -279,7 +279,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*5f);
+            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*1f);
 
             ClampTranslations();
 
