@@ -47,15 +47,17 @@ namespace Substructio.Graphics.OpenGL
             Draw(time, 0, Buffers.Min(b => b.DrawableIndices));
         }
 
-        public void Draw(double time, int start, int count)
+        public void Draw(double time, int start, int count, PrimitiveType? drawPrimitiveType = null)
         {
             Bind();
+
+            var dpt = drawPrimitiveType ?? DrawPrimitiveType;
 
             foreach (var buffer in Buffers)
             {
                 buffer.Bind();
             }
-            GL.DrawArrays(DrawPrimitiveType, start, count);
+            GL.DrawArrays(dpt, start, count);
             foreach (var buffer in Buffers)
             {
                 buffer.UnBind();
