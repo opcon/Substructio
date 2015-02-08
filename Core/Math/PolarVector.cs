@@ -7,7 +7,7 @@ using OpenTK;
 
 namespace Substructio.Core.Math
 {
-    public class PolarVector
+    public struct PolarVector
     {
         private const double AngleRangeStart = 0;
         private const double AngleRangeEnd = MathUtilities.TwoPI;
@@ -15,16 +15,10 @@ namespace Substructio.Core.Math
         public double Radius { get; set; }
         public double Azimuth { get; set; }
 
-        public PolarVector(double azimuth, double radius)
+        public PolarVector(double azimuth, double radius) : this()
         {
             Azimuth = azimuth;
             Radius = radius;
-        }
-
-        public PolarVector()
-        {
-            Azimuth = 0;
-            Radius = 0;
         }
 
         public Vector2 ToCartesianCoordinates()
