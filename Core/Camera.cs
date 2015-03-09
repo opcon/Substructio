@@ -35,6 +35,7 @@ namespace Substructio.Core
         public Vector2 MouseWorldPosition;
         public Polygon OriginalBounds;
         public Vector2 Scale;
+        public Vector2 ScreenScale;
         public Matrix4 ScreenModelViewMatrix;
         public Matrix4 ScreenProjectionMatrix;
         public Vector2 ScreenSpaceMax;
@@ -54,6 +55,7 @@ namespace Substructio.Core
         public bool SplitScreen;
 
         public float ScaleDelta = 0.1f;
+        public float ExtraScale = 0.0f;
 
         #endregion
 
@@ -70,9 +72,10 @@ namespace Substructio.Core
             MaximumScale = new Vector2(20, 20);
             CameraBox = new Polygon();
             Mouse = m;
-            UpdateResize(windowWidth, windowHeight);
             PreferredWidth = prefWidth;
             PreferredHeight = prefHeight;
+            UpdateResize(windowWidth, windowHeight);
+
 
             UpdateProjectionMatrix();
         }
@@ -89,8 +92,10 @@ namespace Substructio.Core
             //PreferredHeight = pHeight;
             WindowWidth = wWidth;
             WindowHeight = wHeight;
-            PreferredWidth = wWidth;
-            PreferredHeight = wHeight;
+            ScreenScale = new Vector2(WindowWidth/PreferredWidth, WindowHeight/PreferredHeight);
+            //ScreenScale = new Vector2(PreferredWidth/WindowWidth, PreferredHeight/WindowHeight);
+            //PreferredWidth = wWidth;
+            //PreferredHeight = wHeight;
 
             UpdateProjectionMatrix();
         }
@@ -101,22 +106,9 @@ namespace Substructio.Core
 
         public void UpdateProjectionMatrix()
         {
-            if (SplitScreen)
-            {
-                WorldProjectionMatrix = Matrix4.CreateOrthographic((PreferredWidth / 2) * Scale.X, PreferredHeight * Scale.Y,
-                                                   -1.0f, 1.0f);
-                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -1.0f, 1.0f);
-            }
-
-            else
-            {
-                WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * Scale.X, PreferredHeight * Scale.Y,
-                                                                   -1000.0f, 1000.0f);
-                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -10.0f, 10.0f);
-            }
-
-
-            
+            WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X + ExtraScale*0) * ScreenScale.X, PreferredHeight * (Scale.Y + ExtraScale*0) * ScreenScale.Y,
+                                                               -1000.0f, 1000.0f);
+            ScreenProjectionMatrix = Matrix4.CreateOrthographic(WindowWidth, WindowHeight, -10.0f, 10.0f);
         }
 
         public void UpdateModelViewMatrix()
@@ -279,7 +271,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*1f);
+            Scale = Vector2.Lerp(Scale, TargetScale + new Vector2(ExtraScale), (float) time*1f);
 
             ClampTranslations();
 
