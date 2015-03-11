@@ -106,7 +106,7 @@ namespace Substructio.Core
 
         public void UpdateProjectionMatrix()
         {
-            WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X + ExtraScale*0) * ScreenScale.X, PreferredHeight * (Scale.Y + ExtraScale*0) * ScreenScale.Y,
+            WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X), PreferredHeight * (Scale.Y),
                                                                -1000.0f, 1000.0f);
             ScreenProjectionMatrix = Matrix4.CreateOrthographic(WindowWidth, WindowHeight, -10.0f, 10.0f);
         }
@@ -271,7 +271,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale + new Vector2(ExtraScale), (float) time*1f);
+            Scale = Vector2.Lerp(Scale, TargetScale * new Vector2(1 + ExtraScale), (float) time*1f);
 
             ClampTranslations();
 
