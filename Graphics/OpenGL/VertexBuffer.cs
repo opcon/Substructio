@@ -18,8 +18,8 @@ namespace Substructio.Graphics.OpenGL
 
         new public void Initialise()
         {
-            if (MaxSize == 0)
-                DataSpecifications.ForEach(d => MaxSize += d.Count * DrawableIndices * 4);
+            //if (MaxSize == 0)
+            DataSpecifications.ForEach(d => MaxSize += d.Count * DrawableIndices * 4);
             Initialise(MaxSize);
         }
     }
