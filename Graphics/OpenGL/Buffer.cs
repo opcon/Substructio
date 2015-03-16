@@ -74,7 +74,7 @@ namespace Substructio.Graphics.OpenGL
         {
             var t = default(T);
             var size = Marshal.SizeOf(t) * data.Count();
-            var test = data.ToArray();
+            //var test = data.ToArray();
             SetData(data, offset, size);
         }
 
