@@ -54,7 +54,8 @@ namespace Substructio.Core
 
         public bool SplitScreen;
 
-        public float ScaleDelta = 0.1f;
+        public float ScaleDelta = 0.01f;
+        public float ScaleChangeMultiplier = 10;
         public float ExtraScale = 0.0f;
 
         #endregion
@@ -271,7 +272,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale * new Vector2(1 + ExtraScale), (float) time*1f);
+            Scale = Vector2.Lerp(Scale, TargetScale * new Vector2(1 + ExtraScale), (float) time*ScaleChangeMultiplier);
 
             ClampTranslations();
 
