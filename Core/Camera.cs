@@ -57,6 +57,7 @@ namespace Substructio.Core
         public float ScaleDelta = 0.01f;
         public float ScaleChangeMultiplier = 10;
         public float ExtraScale = 0.0f;
+        public Vector2 ScreenShake = Vector2.Zero;
 
         #endregion
 
@@ -114,7 +115,13 @@ namespace Substructio.Core
 
         public void UpdateModelViewMatrix()
         {
-            Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + 0.375f, WorldTranslation.Y + 0.375f, 0);
+            ScreenShake = Vector2.Zero;
+            if (System.Math.Abs(ExtraScale) > 0.0001)
+            {
+                Vector2 direction = new Vector2(Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1, Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1);
+                ScreenShake = Vector2.Multiply(direction, ExtraScale);
+            }
+            Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + ScreenShake.X + 0.375f, WorldTranslation.Y + ScreenShake.Y + 0.375f, 0);
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
             
 
@@ -272,7 +279,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale * new Vector2(1 + ExtraScale), (float) time*ScaleChangeMultiplier);
+            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*ScaleChangeMultiplier);
 
             ClampTranslations();
 

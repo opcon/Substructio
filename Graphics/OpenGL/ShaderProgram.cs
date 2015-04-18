@@ -36,7 +36,7 @@ namespace Substructio.Graphics.OpenGL
             GL.LinkProgram(ID);
             string info;
             GL.GetProgramInfoLog(ID, out info);
-            if (!String.IsNullOrWhiteSpace(info)) throw new Exception();
+            if (!String.IsNullOrWhiteSpace(info)) throw new Exception(info);
         }
 
 
