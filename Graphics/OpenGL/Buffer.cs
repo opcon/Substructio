@@ -94,6 +94,11 @@ namespace Substructio.Graphics.OpenGL
             ID = GL.GenBuffer();
         }
 
+        public virtual void CalculateMaxSize()
+        {
+            MaxSize = 0;
+        }
+
     }
 
     public struct BufferDataSpecification
@@ -104,5 +109,6 @@ namespace Substructio.Graphics.OpenGL
         public VertexAttribPointerType Type;
         public bool ShouldBeNormalised;
         public int Stride;
+        public int SizeInBytes;
     }
 }
