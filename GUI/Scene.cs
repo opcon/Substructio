@@ -3,7 +3,7 @@ using Substructio.Core;
 
 namespace Substructio.GUI
 {
-    public abstract class Scene
+    public abstract class Scene : IDisposable
     {
         #region Member Variables
 
@@ -69,7 +69,7 @@ namespace Substructio.GUI
         /// <summary>
         /// Unload and shutdown screen here
         /// </summary>
-        public abstract void UnLoad();
+        public abstract void Dispose();
 
         #endregion
 

@@ -9,7 +9,7 @@ using Substructio.Core;
 
 namespace Substructio.GUI
 {
-    public class SceneManager
+    public class SceneManager : IDisposable
     {
         #region Member Variables
 
@@ -163,23 +163,22 @@ namespace Substructio.GUI
 
         public void RemoveScene(Scene s)
         {
-            s.UnLoad();
+            s.Dispose();
             _scenesToRemove.Add(s);
         }
-
-        public void UnLoad()
-        {
-            foreach (Scene scene in SceneList)
-            {
-                scene.UnLoad();
-            }
-            SceneList.Clear();
-        }
-
         #endregion
 
         #region Private Methods
 
         #endregion
+
+        public void Dispose()
+        {
+            foreach (Scene scene in SceneList)
+            {
+                scene.Dispose();
+            }
+            SceneList.Clear();
+        }
     }
 }
