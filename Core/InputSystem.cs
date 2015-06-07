@@ -6,34 +6,31 @@ namespace Substructio.Core
 {
 	public static class InputSystem
 	{
-		#region Member Variables
-
-		#endregion
-
-		#region Properties
-
 		public static List<Key> CurrentKeys = new List<Key>();
 		public static List<Key> NewKeys = new List<Key>();
+	    public static List<Key> ReleasedKeys = new List<Key>(); 
 		public static List<char> PressedChars = new List<char>();
-		public static List<MouseButton> LastButtons = new List<MouseButton>();
+
+		public static List<MouseButton> ReleasedButtons = new List<MouseButton>();
 		public static List<MouseButton> CurrentButtons = new List<MouseButton>();
 		public static List<MouseButton> PressedButtons = new List<MouseButton>();
 		public static List<MouseButton> UnHandledButtons = new List<MouseButton>();
-		public static float MouseWheelDelta;
-		public static Vector2 MouseDelta;
-		public static Vector2 MousePreviousXY, MouseXY;
+
+		public static float MouseWheelDelta { get; private set; }
+
+	    public static Vector2 RawMouseDelta { get; private set; }
+        public static Vector2 RawMouseXY { get; private set; }
+        public static Vector2 RawMousePreviousXY { get; private set; }
+
+	    public static Vector2 MouseDelta { get; private set; }
+		public static Vector2 MousePreviousXY { get; private set; } 
+        public static Vector2 MouseXY { get; private set; }
+
+        public static bool HasMouseMoved { get; private set; }
 
 	    public static bool Focused = false;
 
-		#endregion
-
-		#region Constructors
-
-		#endregion
-
-		#region Public Methods
-
-		public static void KeyPressed(OpenTK.KeyPressEventArgs e)
+		public static void KeyPressed(KeyPressEventArgs e)
 		{
 			if (Focused)
 				PressedChars.Add(e.KeyChar);
@@ -58,10 +55,8 @@ namespace Substructio.Core
 				if (CurrentKeys.Contains(e.Key)) {
 					CurrentKeys.Remove(e.Key);
 				}
-                //if (NewKeys.Contains(e.Key))
-                //{
-                //    NewKeys.Remove(e.Key);
-                //}
+                if (!ReleasedKeys.Contains(e.Key))
+                    ReleasedKeys.Add(e.Key);
 			}
 		}
 
@@ -85,7 +80,11 @@ namespace Substructio.Core
 			if (Focused) {
 				if (CurrentButtons.Contains(e.Button)) {
 					CurrentButtons.Remove(e.Button);
-				} 
+				}
+			    if (!ReleasedButtons.Contains(e.Button))
+			    {
+			        ReleasedButtons.Add(e.Button);
+			    }
 			}
 		}
 
@@ -99,26 +98,27 @@ namespace Substructio.Core
 			return Mouse.GetState().IsButtonDown(button);
 		}
 
-		public static void Update(bool focused)
-		{
-		    Focused = focused;
-			MouseWheelDelta = 0;
-			MousePreviousXY = MouseXY;
-			MouseXY = new Vector2(Mouse.GetState().X * 0.5f, -Mouse.GetState().Y * 0.5f);
-			MouseDelta = Vector2.Subtract(MouseXY, MousePreviousXY);
-			PressedChars.Clear();
-			PressedButtons.Clear();
-			UnHandledButtons.Clear();
-            NewKeys.Clear();
-			//LastButtons = new List<MouseButton>(CurrentButtons);
-			//CurrentButtons.Clear();
-		}
+	    public static void Update(bool focused)
+	    {
+	        Focused = focused;
 
-		#endregion
+            //handle raw mouse state
+	        var mstate = Mouse.GetState();
+	        RawMousePreviousXY = RawMouseXY;
+            RawMouseXY = new Vector2(mstate.X, mstate.Y);
+            RawMouseDelta = Vector2.Subtract(RawMouseXY, RawMousePreviousXY);
 
-		#region Private Methods
+            //reset mouse variables 
+	        MouseWheelDelta = 0;
+	        HasMouseMoved = false;
 
-		#endregion
+	        PressedChars.Clear();
+	        PressedButtons.Clear();
+            ReleasedButtons.Clear();
+	        UnHandledButtons.Clear();
+	        NewKeys.Clear();
+            ReleasedKeys.Clear();
+	    }
 
 		public static void MouseWheelChanged(MouseWheelEventArgs e)
 		{
@@ -127,8 +127,10 @@ namespace Substructio.Core
 
 		public static void MouseMoved(MouseMoveEventArgs e)
 		{
-			//MouseDelta += new Vector2(e.XDelta, -e.YDelta);
-			//Console.WriteLine(MouseDelta.ToString());
+		    MousePreviousXY = MouseXY;
+            MouseXY = new Vector2(e.X, e.Y);
+            MouseDelta = Vector2.Subtract(MouseXY, MousePreviousXY);
+		    HasMouseMoved = true;
 		}
 	}
 }
