@@ -110,8 +110,8 @@ namespace Substructio.Core
 
         public void UpdateProjectionMatrix()
         {
-            WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X), PreferredHeight * (Scale.Y),
-                                                               -1000.0f, 1000.0f);
+            //WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X), PreferredHeight * (Scale.Y),
+                                                               //-1000.0f, 1000.0f);
             WorldProjectionMatrix = Matrix4.Mult(Matrix4.CreateTranslation(0, 0, -1000 - (float)(System.Math.Exp(Scale.X*10)*0.01)), Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, WindowWidth/WindowHeight, 0.1f, 1000000f));
             ScreenProjectionMatrix = Matrix4.CreateOrthographic(WindowWidth, WindowHeight, -10.0f, 10.0f);
         }
@@ -119,10 +119,10 @@ namespace Substructio.Core
         public void UpdateModelViewMatrix()
         {
             ScreenShake = Vector2.Zero;
-            if (System.Math.Abs(ExtraScale) > 0.0001)
+            if (System.Math.Abs(ExtraScale) > 0.15)
             {
                 Vector2 direction = new Vector2(Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1, Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1);
-                ScreenShake = Vector2.Multiply(direction, ExtraScale);
+                ScreenShake = Vector2.Multiply(direction, 1.5f);
             }
             Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + ScreenShake.X + 0.375f, WorldTranslation.Y + ScreenShake.Y + 0.375f, 0);
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
