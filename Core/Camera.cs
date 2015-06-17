@@ -59,6 +59,8 @@ namespace Substructio.Core
         public float ExtraScale = 0.0f;
         public Vector2 ScreenShake = Vector2.Zero;
 
+        public bool HandleInput;
+
         #endregion
 
         #region Constructors
@@ -346,32 +348,35 @@ namespace Substructio.Core
             MouseScreenDelta = newMScreen - MouseScreenPosition;
             MouseScreenPosition = newMScreen;
 
-            float wheel = Mouse.WheelPrecise;
-            MouseWheelDelta = m_OldMouseWheel - wheel;
-
-            if (InputSystem.CurrentKeys.Contains(Key.Down))
+            if (HandleInput)
             {
-                TargetScale.X += ScaleDelta*0.5f;
-                TargetScale.Y += ScaleDelta*0.5f;
-                SnapToCenter();
+                float wheel = Mouse.WheelPrecise;
+                MouseWheelDelta = m_OldMouseWheel - wheel;
+
+                if (InputSystem.CurrentKeys.Contains(Key.Down))
+                {
+                    TargetScale.X += ScaleDelta*0.5f;
+                    TargetScale.Y += ScaleDelta*0.5f;
+                    SnapToCenter();
+                }
+                else if (InputSystem.CurrentKeys.Contains(Key.Up))
+                {
+                    TargetScale.X -= ScaleDelta;
+                    TargetScale.Y -= ScaleDelta;
+                    SnapToCenter();
+                }
+
+                if (MouseWheelDelta != 0)
+                {
+                    //TargetScale.X += MouseWheelDelta * 0.1f;
+                    //TargetScale.Y += MouseWheelDelta * 0.1f;
+                    TargetScale.X += InputSystem.MouseWheelDelta*ScaleDelta;
+                    TargetScale.Y += InputSystem.MouseWheelDelta*ScaleDelta;
+                    SnapToCenter();
+                }
+
+                m_OldMouseWheel = wheel;
             }
-            else if (InputSystem.CurrentKeys.Contains(Key.Up))
-            {
-                TargetScale.X -= ScaleDelta;
-                TargetScale.Y -= ScaleDelta;
-                SnapToCenter();
-            } 
-
-            if (MouseWheelDelta != 0)
-            {
-                //TargetScale.X += MouseWheelDelta * 0.1f;
-                //TargetScale.Y += MouseWheelDelta * 0.1f;
-                TargetScale.X += InputSystem.MouseWheelDelta*ScaleDelta;
-                TargetScale.Y += InputSystem.MouseWheelDelta*ScaleDelta;
-                SnapToCenter();
-            }
-
-            m_OldMouseWheel = wheel;
 
             //var s = (float)PreferredWidth / (float)GameWindow.WindowWidth;
             //MouseWorldDelta = Vector2.Multiply(InputSystem.MouseDelta, s);
@@ -381,32 +386,6 @@ namespace Substructio.Core
         public void UpdateCenter(Vector2 center)
         {
             Center = center;
-        }
-
-        public void EnableWorldDrawing()
-        {
-            ////Save matrix state
-            //GL.MatrixMode(MatrixMode.Projection);
-            ////GL.PushMatrix();
-            //GL.LoadIdentity();
-
-            //GL.LoadMatrix(ref WorldProjectionMatrix);
-
-            ////Save matrix state
-            //GL.MatrixMode(MatrixMode.Modelview);
-            ////GL.PushMatrix();
-            //GL.LoadIdentity();
-
-            //GL.LoadMatrix(ref WorldModelViewMatrix);
-        }
-
-        public void EnableScreenDrawing()
-        {
-            //GL.MatrixMode(MatrixMode.Projection);
-            //GL.LoadMatrix(ref ScreenProjectionMatrix);
-
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.LoadMatrix(ref ScreenModelViewMatrix);
         }
     }
 }
