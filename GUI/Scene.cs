@@ -15,6 +15,7 @@ namespace Substructio.GUI
         public bool Loaded;
         public SceneManager SceneManager;
         public bool Visible;
+        public bool Removed;
 
         #endregion
 
@@ -27,6 +28,7 @@ namespace Substructio.GUI
         {
             Visible = true;
             Exclusive = false;
+            Removed = false;
         }
 
         #endregion
