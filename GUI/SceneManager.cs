@@ -25,6 +25,7 @@ namespace Substructio.GUI
 
         public Camera ScreenCamera { get; private set; }
         public QFont Font { get; private set; }
+        public QFontDrawing FontDrawing { get; private set; }
         public GameWindow GameWindow { get; private set; }
         public string FontPath { get; private set; }
 
@@ -49,7 +50,8 @@ namespace Substructio.GUI
             _scenesToRemove = new List<Scene>();
             FontPath = fontPath;
             Font = font;
-            Font.ProjectionMatrix = camera.ScreenProjectionMatrix;
+            FontDrawing = new QFontDrawing();
+            FontDrawing.ProjectionMatrix = camera.ScreenProjectionMatrix;
             //Font = new QFont(Directories.LibrariesDirectory + Directories.TextFile, 18);
             ScreenCamera = camera;
             ScreenCamera.Center = Vector2.Zero;
@@ -62,7 +64,7 @@ namespace Substructio.GUI
 
         public void Draw(double time)
         {
-            Font.ResetVBOs();
+            FontDrawing.DrawingPimitiveses.Clear();
             Scene excl = SceneList.Where(scene => scene.Visible).FirstOrDefault(scene => scene.Exclusive);
             if (excl == null)
             {
@@ -75,7 +77,8 @@ namespace Substructio.GUI
             {
                 excl.Draw(time);
             }
-            Font.Draw();
+            FontDrawing.RefreshBuffers();
+            FontDrawing.Draw();
         }
 
         public void Update(double time)
@@ -119,14 +122,14 @@ namespace Substructio.GUI
             InputSystem.Update(GameWindow.Focused);
         }
 
-        public void DrawTextLine(string text, Vector3 position, Color4 colour)
+        public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre)
         {
-            Font.Print(text, position, QFontAlignment.Centre, (Color)colour);
+           return FontDrawing.Print(Font, text, position, alignment, (Color)colour);
         }
 
-        public void DrawProcessedText(ProcessedText pText, Vector3 position, Color4 colour)
+        public SizeF DrawProcessedText(ProcessedText pText, Vector3 position, Color4 colour)
         {
-            Font.Print(pText, position, (Color)colour);
+            return FontDrawing.Print(Font, pText, position, (Color)colour);
         }
 
         private void AddRemoveScenes()
@@ -148,7 +151,7 @@ namespace Substructio.GUI
         public void Resize(EventArgs e)
         {
             ScreenCamera.UpdateResize(GameWindow.Width, GameWindow.Height);
-            Font.ProjectionMatrix = ScreenCamera.ScreenProjectionMatrix;
+            FontDrawing.ProjectionMatrix = ScreenCamera.ScreenProjectionMatrix;
             foreach (Scene scene in SceneList)
             {
                 scene.Resize(e);
@@ -179,6 +182,8 @@ namespace Substructio.GUI
                 scene.Dispose();
             }
             SceneList.Clear();
+            Font.Dispose();
+            FontDrawing.Dispose();
         }
     }
 }
