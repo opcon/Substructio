@@ -65,10 +65,10 @@ namespace Substructio.GUI
         public void Draw(double time)
         {
             FontDrawing.DrawingPimitiveses.Clear();
-            Scene excl = SceneList.Where(scene => scene.Visible).FirstOrDefault(scene => scene.Exclusive);
+            Scene excl = SceneList.Where(scene => scene.Visible && !scene.Removed).FirstOrDefault(scene => scene.Exclusive);
             if (excl == null)
             {
-                foreach (Scene scene in SceneList.Where(screen => screen.Visible))
+                foreach (Scene scene in SceneList.Where(screen => screen.Visible && !screen.Removed))
                 {
                     scene.Draw(time);
                 }
@@ -90,23 +90,17 @@ namespace Substructio.GUI
             ScreenCamera.UpdateProjectionMatrix();
             ScreenCamera.UpdateModelViewMatrix();
 
-            //if (!SceneList.Last().Loaded)
-            //{
-            //    SceneList.Last().Load();
-            //}
-            //else
-            //{
-
-            //    SceneList.Last().Update(time, true);
-            //}
-            for (int i = SceneList.Count - 1; i >= 0; i--)
+            var list = SceneList.Where(scene => !scene.Loaded).ToArray();
+            foreach (var scene in list)
             {
-                if (!SceneList[i].Loaded)
+                scene.Load();
+            }
+            Scene excl = SceneList.Where(scene => scene.Visible && !scene.Removed).FirstOrDefault(scene => scene.Exclusive);
+            if (excl == null)
+            {
+                for (int i = SceneList.Count - 1; i >= 0; i--)
                 {
-                    SceneList[i].Load();
-                }
-                else
-                {
+                    if (SceneList[i].Removed) continue;
                     if (!InputSceneFound && SceneList[i].Visible)
                     {
                         SceneList[i].Update(time, true);
@@ -118,6 +112,8 @@ namespace Substructio.GUI
                     }
                 }
             }
+            else
+                excl.Update(time, true);
             InputSceneFound = false;
             InputSystem.Update(GameWindow.Focused);
         }
@@ -137,6 +133,8 @@ namespace Substructio.GUI
             foreach (Scene scene in _scenesToRemove)
             {
                 SceneList.Remove(scene);
+                scene.Removed = true;
+                scene.Dispose();
             }
 
             foreach (Scene scene in _scenesToAdd)
@@ -166,7 +164,7 @@ namespace Substructio.GUI
 
         public void RemoveScene(Scene s)
         {
-            s.Dispose();
+            s.Removed = true;
             _scenesToRemove.Add(s);
         }
         #endregion
