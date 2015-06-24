@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Gwen.Input;
 using OpenTK;
 using OpenTK.Input;
 
@@ -8,7 +9,7 @@ namespace Substructio.Core
 	{
 		public static List<Key> CurrentKeys = new List<Key>();
 		public static List<Key> NewKeys = new List<Key>();
-	    public static List<Key> ReleasedKeys = new List<Key>(); 
+		public static List<Key> ReleasedKeys = new List<Key>(); 
 		public static List<char> PressedChars = new List<char>();
 
 		public static List<MouseButton> ReleasedButtons = new List<MouseButton>();
@@ -18,17 +19,19 @@ namespace Substructio.Core
 
 		public static float MouseWheelDelta { get; private set; }
 
-	    public static Vector2 RawMouseDelta { get; private set; }
-        public static Vector2 RawMouseXY { get; private set; }
-        public static Vector2 RawMousePreviousXY { get; private set; }
+		public static Vector2 RawMouseDelta { get; private set; }
+		public static Vector2 RawMouseXY { get; private set; }
+		public static Vector2 RawMousePreviousXY { get; private set; }
 
-	    public static Vector2 MouseDelta { get; private set; }
+		public static Vector2 MouseDelta { get; private set; }
 		public static Vector2 MousePreviousXY { get; private set; } 
-        public static Vector2 MouseXY { get; private set; }
+		public static Vector2 MouseXY { get; private set; }
 
-        public static bool HasMouseMoved { get; private set; }
+		public static bool HasMouseMoved { get; private set; }
 
-	    public static bool Focused = false;
+		public static bool Focused;
+
+		private static List<OpenTKAlternative> _guiInputDevices = new List<OpenTKAlternative>(); 
 
 		public static void KeyPressed(KeyPressEventArgs e)
 		{
@@ -55,8 +58,8 @@ namespace Substructio.Core
 				if (CurrentKeys.Contains(e.Key)) {
 					CurrentKeys.Remove(e.Key);
 				}
-                if (!ReleasedKeys.Contains(e.Key))
-                    ReleasedKeys.Add(e.Key);
+				if (!ReleasedKeys.Contains(e.Key))
+					ReleasedKeys.Add(e.Key);
 			}
 		}
 
@@ -81,11 +84,23 @@ namespace Substructio.Core
 				if (CurrentButtons.Contains(e.Button)) {
 					CurrentButtons.Remove(e.Button);
 				}
-			    if (!ReleasedButtons.Contains(e.Button))
-			    {
-			        ReleasedButtons.Add(e.Button);
-			    }
+				if (!ReleasedButtons.Contains(e.Button))
+				{
+					ReleasedButtons.Add(e.Button);
+				}
 			}
+		}
+
+		public static void AddGUIInput(OpenTKAlternative input)
+		{
+			if (!_guiInputDevices.Contains(input))
+				_guiInputDevices.Add(input);
+		}
+
+		public static void RemoveGUIInput(OpenTKAlternative input)
+		{
+			if (_guiInputDevices.Contains(input))
+				_guiInputDevices.Remove(input);
 		}
 
 		public static bool IsKeyDown(Key k)
@@ -98,27 +113,60 @@ namespace Substructio.Core
 			return Mouse.GetState().IsButtonDown(button);
 		}
 
-	    public static void Update(bool focused)
-	    {
-	        Focused = focused;
+		public static void Update(bool focused)
+		{
+			Focused = focused;
 
-            //handle raw mouse state
-	        var mstate = Mouse.GetState();
-	        RawMousePreviousXY = RawMouseXY;
-            RawMouseXY = new Vector2(mstate.X, mstate.Y);
-            RawMouseDelta = Vector2.Subtract(RawMouseXY, RawMousePreviousXY);
+			UpdateGUIInputs();
 
-            //reset mouse variables 
-	        MouseWheelDelta = 0;
-	        HasMouseMoved = false;
+			//handle raw mouse state
+			var mstate = Mouse.GetState();
+			RawMousePreviousXY = RawMouseXY;
+			RawMouseXY = new Vector2(mstate.X, mstate.Y);
+			RawMouseDelta = Vector2.Subtract(RawMouseXY, RawMousePreviousXY);
 
-	        PressedChars.Clear();
-	        PressedButtons.Clear();
-            ReleasedButtons.Clear();
-	        UnHandledButtons.Clear();
-	        NewKeys.Clear();
-            ReleasedKeys.Clear();
-	    }
+			//reset mouse variables 
+			MouseWheelDelta = 0;
+			HasMouseMoved = false;
+
+			PressedChars.Clear();
+			PressedButtons.Clear();
+			ReleasedButtons.Clear();
+			UnHandledButtons.Clear();
+			NewKeys.Clear();
+			ReleasedKeys.Clear();
+
+		}
+
+		private static void UpdateGUIInputs()
+		{
+			foreach (OpenTKAlternative gInput in _guiInputDevices)
+			{
+				foreach (var pressedButton in PressedButtons)
+				{
+					gInput.ProcessMouseButton(pressedButton, true);
+				}
+				foreach (var releasedButton in ReleasedButtons)
+				{
+					gInput.ProcessMouseButton(releasedButton, false);
+				}
+				gInput.ProcessMouseWheel((int)MouseWheelDelta);
+				if (HasMouseMoved)
+					gInput.ProcessMouseMove((int)MouseXY.X, (int)MouseXY.Y);
+				foreach (var newKey in NewKeys)
+				{
+					gInput.ProcessKeyDown(newKey);
+				}
+				foreach (var releasedKey in ReleasedKeys)
+				{
+					gInput.ProcessKeyUp(releasedKey);
+				}
+				foreach (var pressedChar in PressedChars)
+				{
+					gInput.KeyPress(pressedChar);
+				}
+			}
+		}
 
 		public static void MouseWheelChanged(MouseWheelEventArgs e)
 		{
@@ -127,10 +175,10 @@ namespace Substructio.Core
 
 		public static void MouseMoved(MouseMoveEventArgs e)
 		{
-		    MousePreviousXY = MouseXY;
-            MouseXY = new Vector2(e.X, e.Y);
-            MouseDelta = Vector2.Subtract(MouseXY, MousePreviousXY);
-		    HasMouseMoved = true;
+			MousePreviousXY = MouseXY;
+			MouseXY = new Vector2(e.X, e.Y);
+			MouseDelta = Vector2.Subtract(MouseXY, MousePreviousXY);
+			HasMouseMoved = true;
 		}
 	}
 }
