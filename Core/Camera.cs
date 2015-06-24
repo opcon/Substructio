@@ -122,7 +122,7 @@ namespace Substructio.Core
             if (System.Math.Abs(ExtraScale) > 0.15)
             {
                 Vector2 direction = new Vector2(Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1, Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1);
-                ScreenShake = Vector2.Multiply(direction, 1.5f);
+                ScreenShake = Vector2.Multiply(direction, 1f);
             }
             Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + ScreenShake.X + 0.375f, WorldTranslation.Y + ScreenShake.Y + 0.375f, 0);
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
