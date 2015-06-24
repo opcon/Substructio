@@ -14,8 +14,12 @@ namespace Substructio.GUI
         public bool Exclusive;
         public bool Loaded;
         public SceneManager SceneManager;
+        public Scene ParentScene;
         public bool Visible;
         public bool Removed;
+
+        public int WindowWidth {get { return SceneManager.Width; }}
+        public int WindowHeight {get { return SceneManager.Height; }}
 
         #endregion
 
