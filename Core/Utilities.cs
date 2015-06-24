@@ -39,6 +39,12 @@ namespace Substructio.Core
             return s.Trim();
         }
 
+        public static void FixPathSeparators(ref string path)
+        {
+            path = path.Replace('/', Path.DirectorySeparatorChar);
+            path = path.Replace('\\', Path.DirectorySeparatorChar);
+        }
+
         //public static void TranslateTo(Vector2 position, float width, float height)
         //{
         //    //GL.MatrixMode(MatrixMode.Modelview);
