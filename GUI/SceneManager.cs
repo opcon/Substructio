@@ -6,6 +6,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using QuickFont;
 using Substructio.Core;
+using Substructio.Core.Settings;
 
 namespace Substructio.GUI
 {
@@ -23,6 +24,8 @@ namespace Substructio.GUI
         private bool InputSceneFound;
         public List<Scene> SceneList;
 
+        public DirectoryHandler Directories;
+
         public Camera ScreenCamera { get; private set; }
         public QFont Font { get; private set; }
         public QFontDrawing FontDrawing { get; private set; }
@@ -35,6 +38,8 @@ namespace Substructio.GUI
         public int Width {get { return GameWindow.Width; }}
         public int Height {get { return GameWindow.Height; }}
 
+        public IGameSettings GameSettings;
+
         #endregion
 
         #region Constructors
@@ -42,20 +47,25 @@ namespace Substructio.GUI
         /// <summary>
         /// The default Constructor.
         /// </summary>
-        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath)
+        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings)
         {
             GameWindow = gameWindow;
             SceneList = new List<Scene>();
             _scenesToAdd = new List<Scene>();
             _scenesToRemove = new List<Scene>();
+
+            Directories = directoryHandler;
+
             FontPath = fontPath;
             Font = font;
             FontDrawing = new QFontDrawing();
             FontDrawing.ProjectionMatrix = camera.ScreenProjectionMatrix;
-            //Font = new QFont(Directories.LibrariesDirectory + Directories.TextFile, 18);
+
             ScreenCamera = camera;
             ScreenCamera.Center = Vector2.Zero;
             ScreenCamera.MaximumScale = new Vector2(10000, 10000);
+
+            GameSettings = gameSettings;
         }
 
         #endregion
@@ -156,9 +166,10 @@ namespace Substructio.GUI
             }
         }
 
-        public void AddScene(Scene s)
+        public void AddScene(Scene s, Scene parent)
         {
             s.SceneManager = this;
+            s.ParentScene = parent;
             _scenesToAdd.Add(s);
         }
 
