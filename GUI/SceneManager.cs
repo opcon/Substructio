@@ -74,7 +74,7 @@ namespace Substructio.GUI
 
         public void Draw(double time)
         {
-            FontDrawing.DrawingPimitiveses.Clear();
+            FontDrawing.DrawingPrimitives.Clear();
             Scene excl = SceneList.Where(scene => scene.Visible && !scene.Removed).FirstOrDefault(scene => scene.Exclusive);
             if (excl == null)
             {

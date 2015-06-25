@@ -150,7 +150,7 @@ namespace Substructio.Core
 				{
 					gInput.ProcessMouseButton(releasedButton, false);
 				}
-				gInput.ProcessMouseWheel((int)MouseWheelDelta);
+				gInput.ProcessMouseWheel(-(int)MouseWheelDelta*10);
 				if (HasMouseMoved)
 					gInput.ProcessMouseMove((int)MouseXY.X, (int)MouseXY.Y);
 				foreach (var newKey in NewKeys)
