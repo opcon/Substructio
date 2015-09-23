@@ -125,7 +125,7 @@ namespace Substructio.GUI
             else
                 excl.Update(time, true);
             InputSceneFound = false;
-            InputSystem.Update(GameWindow.Focused);
+            //InputSystem.Update(GameWindow.Focused, time);
         }
 
         public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre)
