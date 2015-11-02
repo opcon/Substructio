@@ -1,6 +1,6 @@
 ﻿using System;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 
 namespace Substructio.Core
@@ -35,6 +35,7 @@ namespace Substructio.Core
         public Vector2 MouseWorldPosition;
         public Polygon OriginalBounds;
         public Vector2 Scale;
+        public Vector2 ScreenScale;
         public Matrix4 ScreenModelViewMatrix;
         public Matrix4 ScreenProjectionMatrix;
         public Vector2 ScreenSpaceMax;
@@ -53,7 +54,12 @@ namespace Substructio.Core
 
         public bool SplitScreen;
 
-        public float ScaleDelta = 0.1f;
+        public float ScaleDelta = 0.01f;
+        public float ScaleChangeMultiplier = 10;
+        public float ExtraScale = 0.0f;
+        public Vector2 ScreenShake = Vector2.Zero;
+
+        public bool HandleInput;
 
         #endregion
 
@@ -70,9 +76,17 @@ namespace Substructio.Core
             MaximumScale = new Vector2(20, 20);
             CameraBox = new Polygon();
             Mouse = m;
-            UpdateResize(windowWidth, windowHeight);
             PreferredWidth = prefWidth;
             PreferredHeight = prefHeight;
+            UpdateResize(windowWidth, windowHeight);
+
+
+            UpdateProjectionMatrix();
+        }
+
+        public Matrix4 ModelViewProjection
+        {
+            get { return Matrix4.Mult(WorldModelViewMatrix, WorldProjectionMatrix); }
         }
 
         public void UpdateResize(float wWidth, float wHeight)
@@ -82,8 +96,12 @@ namespace Substructio.Core
             //PreferredHeight = pHeight;
             WindowWidth = wWidth;
             WindowHeight = wHeight;
-            PreferredWidth = wWidth;
-            PreferredHeight = wHeight;
+            ScreenScale = new Vector2(WindowWidth/PreferredWidth, WindowHeight/PreferredHeight);
+            //ScreenScale = new Vector2(PreferredWidth/WindowWidth, PreferredHeight/WindowHeight);
+            //PreferredWidth = wWidth;
+            //PreferredHeight = wHeight;
+
+            UpdateProjectionMatrix();
         }
 
         #endregion
@@ -92,31 +110,31 @@ namespace Substructio.Core
 
         public void UpdateProjectionMatrix()
         {
-            if (SplitScreen)
-            {
-                WorldProjectionMatrix = Matrix4.CreateOrthographic((PreferredWidth / 2) * Scale.X, PreferredHeight * Scale.Y,
-                                                   -1.0f, 1.0f);
-                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -1.0f, 1.0f);
-            }
-
-            else
-            {
-                WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * Scale.X, PreferredHeight * Scale.Y,
-                                                                   -1.0f, 1.0f);
-                ScreenProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth, PreferredHeight, -1.0f, 1.0f);
-            }
-
-
-            
+            //WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X), PreferredHeight * (Scale.Y),
+                                                               //-1000.0f, 1000.0f);
+            WorldProjectionMatrix = Matrix4.Mult(Matrix4.CreateTranslation(0, 0, -1000 - (float)(System.Math.Exp(Scale.X*10)*0.01)), Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, WindowWidth/WindowHeight, 0.1f, 1000000f));
+            ScreenProjectionMatrix = Matrix4.CreateOrthographic(WindowWidth, WindowHeight, -10.0f, 10.0f);
         }
 
         public void UpdateModelViewMatrix()
         {
-            Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + 0.375f, WorldTranslation.Y + 0.375f, 0);
+            ScreenShake = Vector2.Zero;
+            if (System.Math.Abs(ExtraScale) > 0.15)
+            {
+                Vector2 direction = new Vector2(Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1, Utilities.RandomGenerator.Next(2) == 0 ? -1 : 1);
+                ScreenShake = Vector2.Multiply(direction, 1f);
+            }
+            Matrix4 trans = Matrix4.CreateTranslation(WorldTranslation.X + ScreenShake.X + 0.375f, WorldTranslation.Y + ScreenShake.Y + 0.375f, 0);
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
+            
 
             trans = Matrix4.CreateTranslation(InitialTranslation.X + 0.375f, InitialTranslation.Y + 0.375f, 0);
             ScreenModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
+        }
+
+        public void RotateX(float amount)
+        {
+            WorldModelViewMatrix = Matrix4.Mult(Matrix4.CreateRotationX(amount), WorldModelViewMatrix);
         }
 
         public void UpdateTargetTranslation()
@@ -264,7 +282,7 @@ namespace Substructio.Core
             UpdateTargetTranslation();
             ClampScale();
 
-            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*5f);
+            Scale = Vector2.Lerp(Scale, TargetScale, (float) time*ScaleChangeMultiplier);
 
             ClampTranslations();
 
@@ -330,32 +348,35 @@ namespace Substructio.Core
             MouseScreenDelta = newMScreen - MouseScreenPosition;
             MouseScreenPosition = newMScreen;
 
-            float wheel = Mouse.WheelPrecise;
-            MouseWheelDelta = m_OldMouseWheel - wheel;
-
-            if (InputSystem.CurrentKeys.Contains(Key.Down))
+            if (HandleInput)
             {
-                TargetScale.X += ScaleDelta*0.5f;
-                TargetScale.Y += ScaleDelta*0.5f;
-                SnapToCenter();
+                float wheel = Mouse.WheelPrecise;
+                MouseWheelDelta = m_OldMouseWheel - wheel;
+
+                if (InputSystem.CurrentKeys.Contains(Key.Down))
+                {
+                    TargetScale.X += ScaleDelta*0.5f;
+                    TargetScale.Y += ScaleDelta*0.5f;
+                    SnapToCenter();
+                }
+                else if (InputSystem.CurrentKeys.Contains(Key.Up))
+                {
+                    TargetScale.X -= ScaleDelta;
+                    TargetScale.Y -= ScaleDelta;
+                    SnapToCenter();
+                }
+
+                if (MouseWheelDelta != 0)
+                {
+                    //TargetScale.X += MouseWheelDelta * 0.1f;
+                    //TargetScale.Y += MouseWheelDelta * 0.1f;
+                    TargetScale.X += InputSystem.MouseWheelDelta*ScaleDelta;
+                    TargetScale.Y += InputSystem.MouseWheelDelta*ScaleDelta;
+                    SnapToCenter();
+                }
+
+                m_OldMouseWheel = wheel;
             }
-            else if (InputSystem.CurrentKeys.Contains(Key.Up))
-            {
-                TargetScale.X -= ScaleDelta;
-                TargetScale.Y -= ScaleDelta;
-                SnapToCenter();
-            } 
-
-            if (MouseWheelDelta != 0)
-            {
-                //TargetScale.X += MouseWheelDelta * 0.1f;
-                //TargetScale.Y += MouseWheelDelta * 0.1f;
-                TargetScale.X += InputSystem.MouseWheelDelta*ScaleDelta;
-                TargetScale.Y += InputSystem.MouseWheelDelta*ScaleDelta;
-                SnapToCenter();
-            }
-
-            m_OldMouseWheel = wheel;
 
             //var s = (float)PreferredWidth / (float)GameWindow.WindowWidth;
             //MouseWorldDelta = Vector2.Multiply(InputSystem.MouseDelta, s);
@@ -365,32 +386,6 @@ namespace Substructio.Core
         public void UpdateCenter(Vector2 center)
         {
             Center = center;
-        }
-
-        public void EnableWorldDrawing()
-        {
-            //Save matrix state
-            GL.MatrixMode(MatrixMode.Projection);
-            //GL.PushMatrix();
-            GL.LoadIdentity();
-
-            GL.LoadMatrix(ref WorldProjectionMatrix);
-
-            //Save matrix state
-            GL.MatrixMode(MatrixMode.Modelview);
-            //GL.PushMatrix();
-            GL.LoadIdentity();
-
-            GL.LoadMatrix(ref WorldModelViewMatrix);
-        }
-
-        public void EnableScreenDrawing()
-        {
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadMatrix(ref ScreenProjectionMatrix);
-
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref ScreenModelViewMatrix);
         }
     }
 }

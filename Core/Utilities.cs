@@ -7,8 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
+using ColorMine.ColorSpaces;
 
 namespace Substructio.Core
 {
@@ -37,15 +39,21 @@ namespace Substructio.Core
             return s.Trim();
         }
 
-        public static void TranslateTo(Vector2 position, float width, float height)
+        public static void FixPathSeparators(ref string path)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-
-            GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
-
-            GL.Scale(1, -1, 1);
+            path = path.Replace('/', Path.DirectorySeparatorChar);
+            path = path.Replace('\\', Path.DirectorySeparatorChar);
         }
+
+        //public static void TranslateTo(Vector2 position, float width, float height)
+        //{
+        //    //GL.MatrixMode(MatrixMode.Modelview);
+        //    //GL.LoadIdentity();
+
+        //    //GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
+
+        //    //GL.Scale(1, -1, 1);
+        //}
 
         // Handles IPv4 and IPv6 notation.
         public static IPEndPoint CreateIPEndPoint(string endPoint)
@@ -94,11 +102,22 @@ namespace Substructio.Core
 
             var bd = b.LockBits(new Rectangle(0, 0, g.Width, g.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
+            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL4.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
 
             b.UnlockBits(bd);
             b.RotateFlip(RotateFlipType.RotateNoneFlipY);
             return b;
+        }
+
+        public static Color4 ColorSpaceToColor4(IColorSpace col)
+        {
+            var rgb = col.ToRgb();
+            return new Color4((byte)rgb.R, (byte)rgb.G, (byte)rgb.B, 255);
+        }
+
+        public static IColorSpace Color4ToColorSpace(Color4 col)
+        {
+            return new Rgb() {B = col.B*255, G = col.G*255, R = col.R*255};
         }
     }
 }

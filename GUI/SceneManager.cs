@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenTK;
 using OpenTK.Graphics;
 using QuickFont;
 using Substructio.Core;
+using Substructio.Core.Settings;
 
 namespace Substructio.GUI
 {
-    public class SceneManager
+    public class SceneManager : IDisposable
     {
         #region Member Variables
 
@@ -22,10 +24,21 @@ namespace Substructio.GUI
         private bool InputSceneFound;
         public List<Scene> SceneList;
 
+        public DirectoryHandler Directories;
+
         public Camera ScreenCamera { get; private set; }
         public QFont Font { get; private set; }
+        public QFontDrawing FontDrawing { get; private set; }
         public GameWindow GameWindow { get; private set; }
         public string FontPath { get; private set; }
+
+        private float _rotation;
+        private int _direction = 1;
+
+        public int Width {get { return GameWindow.Width; }}
+        public int Height {get { return GameWindow.Height; }}
+
+        public IGameSettings GameSettings;
 
         #endregion
 
@@ -34,18 +47,25 @@ namespace Substructio.GUI
         /// <summary>
         /// The default Constructor.
         /// </summary>
-        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath)
+        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings)
         {
             GameWindow = gameWindow;
             SceneList = new List<Scene>();
             _scenesToAdd = new List<Scene>();
             _scenesToRemove = new List<Scene>();
+
+            Directories = directoryHandler;
+
             FontPath = fontPath;
             Font = font;
-            //Font = new QFont(Directories.LibrariesDirectory + Directories.TextFile, 18);
+            FontDrawing = new QFontDrawing();
+            FontDrawing.ProjectionMatrix = camera.ScreenProjectionMatrix;
+
             ScreenCamera = camera;
             ScreenCamera.Center = Vector2.Zero;
             ScreenCamera.MaximumScale = new Vector2(10000, 10000);
+
+            GameSettings = gameSettings;
         }
 
         #endregion
@@ -54,10 +74,11 @@ namespace Substructio.GUI
 
         public void Draw(double time)
         {
-            Scene excl = SceneList.Where(scene => scene.Visible).FirstOrDefault(scene => scene.Exclusive);
+            FontDrawing.DrawingPrimitives.Clear();
+            Scene excl = SceneList.Where(scene => scene.Visible && !scene.Removed).FirstOrDefault(scene => scene.Exclusive);
             if (excl == null)
             {
-                foreach (Scene scene in SceneList.Where(screen => screen.Visible))
+                foreach (Scene scene in SceneList.Where(screen => screen.Visible && !screen.Removed))
                 {
                     scene.Draw(time);
                 }
@@ -66,6 +87,8 @@ namespace Substructio.GUI
             {
                 excl.Draw(time);
             }
+            FontDrawing.RefreshBuffers();
+            FontDrawing.Draw();
         }
 
         public void Update(double time)
@@ -77,23 +100,17 @@ namespace Substructio.GUI
             ScreenCamera.UpdateProjectionMatrix();
             ScreenCamera.UpdateModelViewMatrix();
 
-            //if (!SceneList.Last().Loaded)
-            //{
-            //    SceneList.Last().Load();
-            //}
-            //else
-            //{
-
-            //    SceneList.Last().Update(time, true);
-            //}
-            for (int i = SceneList.Count - 1; i >= 0; i--)
+            var list = SceneList.Where(scene => !scene.Loaded).ToArray();
+            foreach (var scene in list)
             {
-                if (!SceneList[i].Loaded)
+                scene.Load();
+            }
+            Scene excl = SceneList.Where(scene => scene.Visible && !scene.Removed).FirstOrDefault(scene => scene.Exclusive);
+            if (excl == null)
+            {
+                for (int i = SceneList.Count - 1; i >= 0; i--)
                 {
-                    SceneList[i].Load();
-                }
-                else
-                {
+                    if (SceneList[i].Removed) continue;
                     if (!InputSceneFound && SceneList[i].Visible)
                     {
                         SceneList[i].Update(time, true);
@@ -105,23 +122,20 @@ namespace Substructio.GUI
                     }
                 }
             }
+            else
+                excl.Update(time, true);
             InputSceneFound = false;
-            InputSystem.Update(GameWindow.Focused);
+            //InputSystem.Update(GameWindow.Focused, time);
         }
 
-        public void DrawTextLine(string text, Vector2 position)
+        public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre)
         {
-            Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
-
-            Font.Options.Colour = Color4.Black;
-            Font.Print(text);
+           return FontDrawing.Print(Font, text, position, alignment, (Color)colour);
         }
 
-        public void DrawProcessedText(ProcessedText pText, Vector2 position, QFont font)
+        public SizeF DrawProcessedText(ProcessedText pText, Vector3 position, Color4 colour)
         {
-            Utilities.TranslateTo(position, ScreenCamera.PreferredWidth, ScreenCamera.PreferredHeight);
-
-            font.Print(pText);
+            return FontDrawing.Print(Font, pText, position, (Color)colour);
         }
 
         private void AddRemoveScenes()
@@ -129,6 +143,8 @@ namespace Substructio.GUI
             foreach (Scene scene in _scenesToRemove)
             {
                 SceneList.Remove(scene);
+                scene.Removed = true;
+                scene.Dispose();
             }
 
             foreach (Scene scene in _scenesToAdd)
@@ -143,37 +159,40 @@ namespace Substructio.GUI
         public void Resize(EventArgs e)
         {
             ScreenCamera.UpdateResize(GameWindow.Width, GameWindow.Height);
+            FontDrawing.ProjectionMatrix = ScreenCamera.ScreenProjectionMatrix;
             foreach (Scene scene in SceneList)
             {
                 scene.Resize(e);
             }
         }
 
-        public void AddScene(Scene s)
+        public void AddScene(Scene s, Scene parent)
         {
             s.SceneManager = this;
+            s.ParentScene = parent;
             _scenesToAdd.Add(s);
         }
 
         public void RemoveScene(Scene s)
         {
-            s.UnLoad();
+            s.Removed = true;
             _scenesToRemove.Add(s);
         }
-
-        public void UnLoad()
-        {
-            foreach (Scene scene in SceneList)
-            {
-                scene.UnLoad();
-            }
-            SceneList.Clear();
-        }
-
         #endregion
 
         #region Private Methods
 
         #endregion
+
+        public void Dispose()
+        {
+            foreach (Scene scene in SceneList)
+            {
+                scene.Dispose();
+            }
+            SceneList.Clear();
+            Font.Dispose();
+            FontDrawing.Dispose();
+        }
     }
 }
