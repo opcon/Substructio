@@ -94,6 +94,7 @@
     <Compile Include="GUI\SceneManager.cs" />
     <Compile Include="Core\Utilities.cs" />
     <Compile Include="IO\ASCIIFileHelper.cs" />
+    <Compile Include="IO\CrashReporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Graphics\Lines\StraightLine.cs" />
   </ItemGroup>
