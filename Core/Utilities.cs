@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using ColorMine.ColorSpaces;
 
@@ -39,15 +39,21 @@ namespace Substructio.Core
             return s.Trim();
         }
 
-        public static void TranslateTo(Vector2 position, float width, float height)
+        public static void FixPathSeparators(ref string path)
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadIdentity();
-
-            GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
-
-            GL.Scale(1, -1, 1);
+            path = path.Replace('/', Path.DirectorySeparatorChar);
+            path = path.Replace('\\', Path.DirectorySeparatorChar);
         }
+
+        //public static void TranslateTo(Vector2 position, float width, float height)
+        //{
+        //    //GL.MatrixMode(MatrixMode.Modelview);
+        //    //GL.LoadIdentity();
+
+        //    //GL.Translate(-(width/2) + position.X, -(height/2) + position.Y, 0);
+
+        //    //GL.Scale(1, -1, 1);
+        //}
 
         // Handles IPv4 and IPv6 notation.
         public static IPEndPoint CreateIPEndPoint(string endPoint)
@@ -96,7 +102,7 @@ namespace Substructio.Core
 
             var bd = b.LockBits(new Rectangle(0, 0, g.Width, g.Height), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
+            GL.ReadPixels(0, 0, g.Width, g.Height, OpenTK.Graphics.OpenGL4.PixelFormat.Bgr, PixelType.UnsignedByte, bd.Scan0);
 
             b.UnlockBits(bd);
             b.RotateFlip(RotateFlipType.RotateNoneFlipY);

@@ -3,7 +3,7 @@ using Substructio.Core;
 
 namespace Substructio.GUI
 {
-    public abstract class Scene
+    public abstract class Scene : IDisposable
     {
         #region Member Variables
 
@@ -14,7 +14,12 @@ namespace Substructio.GUI
         public bool Exclusive;
         public bool Loaded;
         public SceneManager SceneManager;
+        public Scene ParentScene;
         public bool Visible;
+        public bool Removed;
+
+        public int WindowWidth {get { return SceneManager.Width; }}
+        public int WindowHeight {get { return SceneManager.Height; }}
 
         #endregion
 
@@ -27,6 +32,7 @@ namespace Substructio.GUI
         {
             Visible = true;
             Exclusive = false;
+            Removed = false;
         }
 
         #endregion
@@ -69,7 +75,7 @@ namespace Substructio.GUI
         /// <summary>
         /// Unload and shutdown screen here
         /// </summary>
-        public abstract void UnLoad();
+        public abstract void Dispose();
 
         #endregion
 

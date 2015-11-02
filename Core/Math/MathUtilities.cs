@@ -19,7 +19,7 @@ namespace Substructio.Core.Math
         /// <param name="start">The start of the range</param>
         /// <param name="end">The end of the range</param>
         /// <returns>The normalised value.</returns>
-        public static double Normalise(double value, double start, double end)
+        public static double Normalise(double value, double start = 0, double end = TwoPI)
         {
             var width = end - start;
             var offsetValue = value - start;
