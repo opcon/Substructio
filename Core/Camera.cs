@@ -248,7 +248,7 @@ namespace Substructio.Core
             }
 
             //Transform the mouse position, and return it as vector 2, no need for the z component
-            vec = Vector3.Transform(vec, mat);
+            vec = Vector3.TransformPosition(vec, mat);
             return vec.Xy;
         }
 
