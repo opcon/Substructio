@@ -2,6 +2,7 @@
 using Gwen.Input;
 using OpenTK;
 using OpenTK.Input;
+using Key = OpenTK.Input.Key;
 
 namespace Substructio.Core
 {
