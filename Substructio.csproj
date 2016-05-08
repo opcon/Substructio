@@ -82,6 +82,7 @@
     <Compile Include="Core\Math\PolarVector.cs" />
     <Compile Include="Core\Polygon.cs" />
     <Compile Include="Core\Settings\IGameSettings.cs" />
+    <Compile Include="Core\ValueWrapper.cs" />
     <Compile Include="Graphics\OpenGL\BindeableObject.cs" />
     <Compile Include="Graphics\OpenGL\Buffer.cs" />
     <Compile Include="Graphics\OpenGL\ShaderProgram.cs" />

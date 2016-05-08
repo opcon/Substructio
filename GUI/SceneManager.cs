@@ -12,11 +12,7 @@ namespace Substructio.GUI
 {
     public class SceneManager : IDisposable
     {
-        #region Member Variables
-
-        #endregion
-
-        #region Properties
+        public ValueWrapper<bool> Debug;
 
         private readonly List<Scene> _scenesToAdd;
         private readonly List<Scene> _scenesToRemove;
@@ -40,14 +36,10 @@ namespace Substructio.GUI
 
         public IGameSettings GameSettings;
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         /// The default Constructor.
         /// </summary>
-        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings)
+        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings, ValueWrapper<bool> debug)
         {
             GameWindow = gameWindow;
             SceneList = new List<Scene>();
@@ -66,11 +58,9 @@ namespace Substructio.GUI
             ScreenCamera.MaximumScale = new Vector2(10000, 10000);
 
             GameSettings = gameSettings;
+
+            Debug = debug;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void Draw(double time)
         {
@@ -125,7 +115,6 @@ namespace Substructio.GUI
             else
                 excl.Update(time, true);
             InputSceneFound = false;
-            //InputSystem.Update(GameWindow.Focused, time);
         }
 
         public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre)
@@ -178,11 +167,6 @@ namespace Substructio.GUI
             s.Removed = true;
             _scenesToRemove.Add(s);
         }
-        #endregion
-
-        #region Private Methods
-
-        #endregion
 
         public void Dispose()
         {
