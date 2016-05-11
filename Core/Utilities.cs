@@ -119,5 +119,18 @@ namespace Substructio.Core
         {
             return new Rgb() {B = col.B*255, G = col.G*255, R = col.R*255};
         }
+
+        public static ulong FNV1aHash64(byte[] bytes)
+        {
+            ulong fnvPrime = 1099511628211; //64bit prime
+            ulong hash = 14695981039346656037; //64bit offset
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                hash = hash ^ bytes[i];
+                hash = hash * fnvPrime;
+            }
+            return hash;
+        }
     }
 }
