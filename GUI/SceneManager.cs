@@ -133,7 +133,7 @@ namespace Substructio.GUI
             {
                 SceneList.Remove(scene);
                 scene.Removed = true;
-                scene.Dispose();
+                if (scene.NeedsDisposing) scene.Dispose();
             }
 
             foreach (Scene scene in _scenesToAdd)
@@ -162,9 +162,10 @@ namespace Substructio.GUI
             _scenesToAdd.Add(s);
         }
 
-        public void RemoveScene(Scene s)
+        public void RemoveScene(Scene s, bool dispose=false)
         {
             s.Removed = true;
+            s.NeedsDisposing = dispose;
             _scenesToRemove.Add(s);
         }
 

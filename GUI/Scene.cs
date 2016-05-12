@@ -5,12 +5,6 @@ namespace Substructio.GUI
 {
     public abstract class Scene : IDisposable
     {
-        #region Member Variables
-
-        #endregion
-
-        #region Properties
-
         public bool Exclusive;
         public bool Loaded;
         public SceneManager SceneManager;
@@ -21,9 +15,7 @@ namespace Substructio.GUI
         public int WindowWidth {get { return SceneManager.Width; }}
         public int WindowHeight {get { return SceneManager.Height; }}
 
-        #endregion
-
-        #region Constructors
+        public bool NeedsDisposing = false; 
 
         /// <summary>
         /// The default Constructor.
@@ -34,10 +26,6 @@ namespace Substructio.GUI
             Exclusive = false;
             Removed = false;
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Load resources here
@@ -76,11 +64,5 @@ namespace Substructio.GUI
         /// Unload and shutdown screen here
         /// </summary>
         public abstract void Dispose();
-
-        #endregion
-
-        #region Private Methods
-
-        #endregion
     }
 }
