@@ -208,6 +208,7 @@ namespace Substructio.Core
             HasMouseMoved = true;
         }
 
+
         public static Key[] Letters = { Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G };
 	}
 
