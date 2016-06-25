@@ -48,12 +48,12 @@
       <HintPath>..\turnt-ninja\packages\CSCore.1.1.0\lib\net35-client\CSCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gwen, Version=3.0.6020.16507, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\Gwen.3.0.6020.16507\lib\net40\Gwen.dll</HintPath>
+    <Reference Include="Gwen, Version=3.0.6020.17258, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Gwen.3.0.6020.17258\lib\net40\Gwen.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gwen.Renderer.OpenTK, Version=3.0.6020.16547, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\Gwen.Renderer.OpenTK.3.0.6020.16547\lib\net40\Gwen.Renderer.OpenTK.dll</HintPath>
+    <Reference Include="Gwen.Renderer.OpenTK, Version=3.0.6020.17307, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Gwen.Renderer.OpenTK.3.0.6020.17307\lib\net40\Gwen.Renderer.OpenTK.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HUSL, Version=1.0.5573.10473, Culture=neutral, processorArchitecture=MSIL">
