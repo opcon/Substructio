@@ -1,0 +1,11 @@
+version: 1.0.{build}-appveyor
+image: Visual Studio 2015
+configuration:
+- Debug
+- Release
+before_build:
+- cmd: nuget restore Substructio.sln
+build:
+  project: Substructio.sln
+  parallel: true
+  verbosity: minimal
