@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\turnt-ninja\packages\SharpFont.3.1.0\build\SharpFont.props" Condition="Exists('..\turnt-ninja\packages\SharpFont.3.1.0\build\SharpFont.props')" />
-  <Import Project="..\turnt-ninja\packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props" Condition="Exists('..\turnt-ninja\packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props')" />
+  <Import Project="packages\SharpFont.3.1.0\build\SharpFont.props" Condition="Exists('packages\SharpFont.3.1.0\build\SharpFont.props')" />
+  <Import Project="packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props" Condition="Exists('packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -45,7 +45,7 @@
       <HintPath>packages\ColorMine.1.1.3.0\lib\ColorMine.dll</HintPath>
     </Reference>
     <Reference Include="CSCore, Version=1.1.5992.18249, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\CSCore.1.1.0\lib\net35-client\CSCore.dll</HintPath>
+      <HintPath>packages\CSCore.1.1.0\lib\net35-client\CSCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Gwen, Version=3.0.6020.17258, Culture=neutral, processorArchitecture=MSIL">
@@ -57,23 +57,23 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="HUSL, Version=1.0.5573.10473, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\HUSL.1.0.1\lib\net40\HUSL.dll</HintPath>
+      <HintPath>packages\HUSL.1.0.1\lib\net40\HUSL.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenTK, Version=1.2.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
+      <HintPath>packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="QuickFont, Version=4.3.6020.14402, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\QuickFont.Desktop.4.3.6020.14402\lib\net40\QuickFont.dll</HintPath>
+    <Reference Include="QuickFont, Version=4.3.6020.17547, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\QuickFont.Desktop.4.3.6020.17547\lib\net40\QuickFont.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SharpFont, Version=3.0.1.200, Culture=neutral, PublicKeyToken=48add4c483071cdf, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\SharpFont.3.1.0\lib\net20\SharpFont.dll</HintPath>
+      <HintPath>packages\SharpFont.3.1.0\lib\net20\SharpFont.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\turnt-ninja\packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
+      <HintPath>packages\Splat.1.6.2\lib\Net45\Splat.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -85,10 +85,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="OpenTK">
-      <HintPath>..\turnt-ninja\packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
+      <HintPath>packages\OpenTK.Next.1.2.2336.6514-pre\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="ColorMine">
-      <HintPath>..\turnt-ninja\packages\ColorMine.1.1.3.0\lib\ColorMine.dll</HintPath>
+      <HintPath>packages\ColorMine.1.1.3.0\lib\ColorMine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +142,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\turnt-ninja\packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', '..\turnt-ninja\packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props'))" />
-    <Error Condition="!Exists('..\turnt-ninja\packages\SharpFont.3.1.0\build\SharpFont.props')" Text="$([System.String]::Format('$(ErrorText)', '..\turnt-ninja\packages\SharpFont.3.1.0\build\SharpFont.props'))" />
+    <Error Condition="!Exists('packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props'))" />
+    <Error Condition="!Exists('packages\SharpFont.3.1.0\build\SharpFont.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\SharpFont.3.1.0\build\SharpFont.props'))" />
   </Target>
 </Project>
