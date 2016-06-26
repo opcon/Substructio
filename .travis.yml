@@ -4,8 +4,8 @@ os:
 language: csharp
 solution: Substructio.sln
 install:
-  - .paket/paket.bootstrapper.exe
-  - .paket/paket.exe restore
+  - mono .paket/paket.bootstrapper.exe
+  - mono .paket/paket.exe restore
 notifications:
   email:
     on_success: change
