@@ -1,5 +1,5 @@
 // include Fake lib
-#r @"packages/build/FAKE/tools/Fakelib.dll"
+#r @"packages/build/FAKE/tools/FakeLib.dll"
 open Fake
 
 // Properties
