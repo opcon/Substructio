@@ -3,7 +3,7 @@ os:
   - osx
 language: csharp
 solution: Substructio.sln
-install:
+before_script:
   - mono .paket/paket.bootstrapper.exe
   - mono .paket/paket.exe restore
 notifications:
