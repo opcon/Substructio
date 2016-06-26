@@ -3,10 +3,8 @@ image: Visual Studio 2015
 configuration:
 - Debug
 - Release
-before_build:
-  - cmd: .paket\paket.bootstrapper.exe
-  - cmd: .paket\paket.exe restore
 build:
-  project: Substructio.sln
   parallel: true
   verbosity: minimal
+build_script:
+  - cmd: .\build.cmd mode=%CONFIGURATION%

@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{58627F
 		paket.dependencies = paket.dependencies
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substructio", "Substructio.csproj", "{5B3F1066-88DA-4F9C-8DFE-646C40B412C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Substructio", "src/Substructio.csproj", "{5B3F1066-88DA-4F9C-8DFE-646C40B412C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
