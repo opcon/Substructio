@@ -1,3 +1,5 @@
+redirects: on
+
 source https://ci.appveyor.com/nuget/gwen-nolegacy-opentk-renderer-y8bf4l8s9nxo
 source https://ci.appveyor.com/nuget/onset-detection-ce96cu4ph0k5
 source https://ci.appveyor.com/nuget/quickfont-m6wdxb2yf1v5
