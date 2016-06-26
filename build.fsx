@@ -21,9 +21,14 @@ Target "Build" (fun _ ->
             |> Log "AppBuild-Output: "
 )
 
+Target "Default" (fun _ ->
+    ()
+)
+
 // Dependencies
 "Clean"
     ==> "Build"
+    ==> "Default"
 
 // start build
-RunTargetOrDefault "Build"
+RunTargetOrDefault "Default"
