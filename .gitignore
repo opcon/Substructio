@@ -166,3 +166,6 @@ $RECYCLE.BIN/
 
 # FAKE
 .fake/
+
+# Paket
+paket.exe
