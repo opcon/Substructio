@@ -23,7 +23,7 @@ namespace Substructio.GUI
         public DirectoryHandler Directories;
 
         public Camera ScreenCamera { get; private set; }
-        public QFont Font { get; private set; }
+        public GameFont DefaultFont { get; private set; }
         public QFontDrawing FontDrawing { get; private set; }
         public GameWindow GameWindow { get; private set; }
         public string FontPath { get; private set; }
@@ -36,10 +36,12 @@ namespace Substructio.GUI
 
         public IGameSettings GameSettings;
 
+        public FontLibrary GameFontLibrary;
+
         /// <summary>
         /// The default Constructor.
         /// </summary>
-        public SceneManager(GameWindow gameWindow, Camera camera, QFont font, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings, ValueWrapper<bool> debug)
+        public SceneManager(GameWindow gameWindow, Camera camera, FontLibrary fontLibrary, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings, ValueWrapper<bool> debug)
         {
             GameWindow = gameWindow;
             SceneList = new List<Scene>();
@@ -49,7 +51,8 @@ namespace Substructio.GUI
             Directories = directoryHandler;
 
             FontPath = fontPath;
-            Font = font;
+            GameFontLibrary = fontLibrary;
+            DefaultFont = GameFontLibrary.GetFirstOrDefault(GameFontType.Default);
             FontDrawing = new QFontDrawing();
             FontDrawing.ProjectionMatrix = camera.ScreenProjectionMatrix;
 
@@ -117,14 +120,15 @@ namespace Substructio.GUI
             InputSceneFound = false;
         }
 
-        public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre)
+        public SizeF DrawTextLine(string text, Vector3 position, Color4 colour, QFontAlignment alignment = QFontAlignment.Centre, QFont font = null)
         {
-           return FontDrawing.Print(Font, text, position, alignment, (Color)colour);
+            if (font == null) font = DefaultFont.Font;
+            return FontDrawing.Print(font, text, position, alignment, (Color)colour);
         }
 
         public SizeF DrawProcessedText(ProcessedText pText, Vector3 position, Color4 colour)
         {
-            return FontDrawing.Print(Font, pText, position, (Color)colour);
+            return FontDrawing.Print(DefaultFont.Font, pText, position, (Color)colour);
         }
 
         private void AddRemoveScenes()
@@ -176,7 +180,7 @@ namespace Substructio.GUI
                 scene.Dispose();
             }
             SceneList.Clear();
-            Font.Dispose();
+            DefaultFont.Font.Dispose();
             FontDrawing.Dispose();
         }
     }
