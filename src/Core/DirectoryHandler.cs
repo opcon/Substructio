@@ -27,5 +27,10 @@ namespace Substructio.Core
             DirectoryList.Add(name, new DirectoryInfo(path));
         }
 
+        public string Locate(string key, string path)
+        {
+            return Path.Combine(this[key].FullName, path);
+        }
+
     }
 }
