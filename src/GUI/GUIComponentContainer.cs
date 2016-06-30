@@ -7,10 +7,12 @@ using OpenTK;
 
 namespace Substructio.GUI
 {
-    public struct GUIComponentContainer
+    public struct GUIComponentContainer : IDisposable
     {
         public Gwen.Renderer.OpenTK Renderer { get; private set; }
-        public Gwen.Skin.Base Skin { get; private set; } 
+        public Gwen.Skin.Base Skin { get; private set; }
+
+        private bool _disposed;
 
         public GUIComponentContainer(Gwen.Renderer.OpenTK renderer, Gwen.Skin.Base skin) : this()
         {
@@ -24,5 +26,20 @@ namespace Substructio.GUI
             Renderer.Resize(ref renderMatrix, width, height);
         }
 
+        public void Dispose()
+        {
+            if (_disposed) return;
+            if (Renderer != null)
+            {
+                Renderer.Dispose();
+                Renderer = null;
+            }
+            if (Skin != null)
+            {
+                Skin.Dispose();
+                Skin = null;
+            }
+            _disposed = true;
+        }
     }
 }
