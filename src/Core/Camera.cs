@@ -47,6 +47,8 @@ namespace Substructio.Core
         public Matrix4 WorldProjectionMatrix;
         public Vector2 WorldTranslation;
 
+        public float WorldZOffset = 0;
+
         public float PreferredWidth;
         public float PreferredHeight;
         public float WindowWidth;
@@ -84,9 +86,14 @@ namespace Substructio.Core
             UpdateProjectionMatrix();
         }
 
-        public Matrix4 ModelViewProjection
+        public Matrix4 WorldModelViewProjection
         {
             get { return Matrix4.Mult(WorldModelViewMatrix, WorldProjectionMatrix); }
+        }
+
+        public Matrix4 ScreenModelViewProjection
+        {
+            get { return Matrix4.Mult(ScreenModelViewMatrix, ScreenProjectionMatrix); }
         }
 
         public void UpdateResize(float wWidth, float wHeight)
@@ -112,7 +119,8 @@ namespace Substructio.Core
         {
             //WorldProjectionMatrix = Matrix4.CreateOrthographic(PreferredWidth * (Scale.X), PreferredHeight * (Scale.Y),
                                                                //-1000.0f, 1000.0f);
-            WorldProjectionMatrix = Matrix4.Mult(Matrix4.CreateTranslation(0, 0, -1000 - (float)(System.Math.Exp(Scale.X*10)*0.01)), Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, WindowWidth/WindowHeight, 0.1f, 1000000f));
+            WorldZOffset = -1000 - (float)(System.Math.Exp(Scale.X * 10) * 0.01);
+            WorldProjectionMatrix = Matrix4.Mult(Matrix4.CreateTranslation(0, 0, WorldZOffset), Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, WindowWidth/WindowHeight, 0.1f, 1000000f));
             ScreenProjectionMatrix = Matrix4.CreateOrthographic(WindowWidth, WindowHeight, -10.0f, 10.0f);
         }
 
@@ -128,7 +136,7 @@ namespace Substructio.Core
             WorldModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
             
 
-            trans = Matrix4.CreateTranslation(InitialTranslation.X + 0.375f, InitialTranslation.Y + 0.375f, 0);
+            trans = Matrix4.CreateTranslation(0.375f, 0.375f, 0);
             ScreenModelViewMatrix = Matrix4.Mult(Matrix4.Identity, trans);
         }
 
@@ -226,17 +234,23 @@ namespace Substructio.Core
             WorldTranslation = TargetWorldTranslation;
         }
 
-        public Vector2 UnProject(Vector3 vec, bool world = true)
+        public Vector2 UnProject(Vector2 vec)
+        {
+            var ret = UnProject(new Vector3(vec.X, vec.Y, WorldZOffset));
+            return ret.Xy;
+        }
+
+        public Vector3 UnProject(Vector3 vec, bool world = true)
         {
             //Retrieve the inverse of the modelview and projection matrices
             var mat = new Matrix4();
             if (world)
             {
-                mat = Matrix4.Mult(WorldModelViewMatrix, WorldProjectionMatrix);
+                mat = WorldModelViewProjection;
             }
             else
             {
-                mat = Matrix4.Mult(ScreenModelViewMatrix, ScreenProjectionMatrix);
+                mat = ScreenModelViewProjection;
             }
 
             try
@@ -249,7 +263,7 @@ namespace Substructio.Core
 
             //Transform the mouse position, and return it as vector 2, no need for the z component
             vec = Vector3.TransformPosition(vec, mat);
-            return vec.Xy;
+            return vec;
         }
 
         public Vector2 UnProjectMouse(bool world = true)
@@ -263,7 +277,7 @@ namespace Substructio.Core
             //And change that into -1 to 1 
             mousePos = (mousePos*2) - new Vector3(1, 1, 0);
 
-            return UnProject(mousePos, world);
+            return UnProject(mousePos, world).Xy;
         }
 
         #endregion
