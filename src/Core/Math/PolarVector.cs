@@ -46,5 +46,10 @@ namespace Substructio.Core.Math
         {
            return new Vector2((float)((polarVector.Radius+dRadius) * System.Math.Cos(polarVector.Azimuth+dAzimuth)), (float)((polarVector.Radius+dRadius) * System.Math.Sin(polarVector.Azimuth+dAzimuth))); 
         }
+
+        public static PolarVector FromCartesianCoordinates(Vector2 cartesianVector)
+        {
+            return new PolarVector(System.Math.Atan2(cartesianVector.Y, cartesianVector.X), cartesianVector.Length);
+        }
     }
 }
