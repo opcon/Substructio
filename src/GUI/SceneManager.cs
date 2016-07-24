@@ -180,7 +180,7 @@ namespace Substructio.GUI
                 scene.Dispose();
             }
             SceneList.Clear();
-            DefaultFont.Font.Dispose();
+            GameFontLibrary.Dispose();
             FontDrawing.Dispose();
         }
     }
