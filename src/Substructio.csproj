@@ -80,6 +80,8 @@
     <Compile Include="IO\ASCIIFileHelper.cs" />
     <Compile Include="IO\CrashReporter.cs" />
     <Compile Include="IO\SimpleLogger.cs" />
+    <Compile Include="Logging\IAnalytics.cs" />
+    <Compile Include="Logging\IErrorReporting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Graphics\Lines\StraightLine.cs" />
   </ItemGroup>
