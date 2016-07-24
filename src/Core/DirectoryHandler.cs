@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Substructio.Core
 {
-    public class DirectoryHandler
+    public class DirectoryHandler : IDirectoryHandler
     {
         private Dictionary<string, DirectoryInfo> DirectoryList;
 
