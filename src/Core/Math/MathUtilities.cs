@@ -13,7 +13,7 @@ namespace Substructio.Core.Math
         /// <summary>
         /// Normalizes any number to an arbitrary range 
         /// by assuming the range wraps around when going below min or above max.
-        /// taken from http://stackoverflow.com/a/2021986
+        /// adapted from http://stackoverflow.com/a/2021986
         /// </summary>
         /// <param name="value">The value to normalise</param>
         /// <param name="start">The start of the range</param>
