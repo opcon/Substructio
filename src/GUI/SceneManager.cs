@@ -20,7 +20,7 @@ namespace Substructio.GUI
         private bool InputSceneFound;
         public List<Scene> SceneList;
 
-        public DirectoryHandler Directories;
+        public IDirectoryHandler Directories;
 
         public Camera ScreenCamera { get; private set; }
         public GameFont DefaultFont { get; private set; }
@@ -41,7 +41,7 @@ namespace Substructio.GUI
         /// <summary>
         /// The default Constructor.
         /// </summary>
-        public SceneManager(GameWindow gameWindow, Camera camera, FontLibrary fontLibrary, string fontPath, DirectoryHandler directoryHandler, IGameSettings gameSettings, ValueWrapper<bool> debug)
+        public SceneManager(GameWindow gameWindow, Camera camera, FontLibrary fontLibrary, string fontPath, IDirectoryHandler directoryHandler, IGameSettings gameSettings, ValueWrapper<bool> debug)
         {
             GameWindow = gameWindow;
             SceneList = new List<Scene>();
