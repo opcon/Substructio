@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\Substructio.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="OpenTK.dll.config">
@@ -130,7 +131,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="CSCore">
-          <HintPath>..\packages\CSCore\lib\net35-client\CSCore.dll</HintPath>
+          <HintPath>..\packages\CSCore\lib\net35\CSCore.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

@@ -3,6 +3,7 @@ redirects: on
 source https://ci.appveyor.com/nuget/gwen-nolegacy-opentk-renderer-y8bf4l8s9nxo
 source https://ci.appveyor.com/nuget/onset-detection-ce96cu4ph0k5
 source https://ci.appveyor.com/nuget/quickfont-m6wdxb2yf1v5
+source https://ci.appveyor.com/nuget/cscore-lt381sf5ht3e
 source https://www.nuget.org/api/v2/
 
 nuget NuGet.CommandLine
