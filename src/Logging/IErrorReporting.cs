@@ -8,14 +8,14 @@ namespace Substructio.Logging
 {
     public interface IErrorReporting
     {
-        void ReportError(Exception e);
-        void ReportMessage(string message);
+        string ReportError(Exception e);
+        string ReportMessage(string message);
     }
 
     public class NullErrorReporting : IErrorReporting
     {
-        public void ReportError(Exception e) { }
+        public string ReportError(Exception e) { return ""; }
 
-        public void ReportMessage(string message) { }
+        public string ReportMessage(string message) { return ""; }
     }
 }
