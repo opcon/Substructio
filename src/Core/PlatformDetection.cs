@@ -57,6 +57,60 @@ namespace Substructio.Core
             }
         }
 
+        public static string GetVersionName()
+        {
+            switch(RunningPlatform())
+            {
+                case Platform.Linux:
+                    return Environment.OSVersion.Version.ToString();
+                case Platform.MacOSX:
+                    return GetMacVersionFriendlyName();
+                case Platform.Windows:
+                    return GetWindowsVersionFriendlyName();
+                default:
+                    return Environment.OSVersion.Version.ToString();
+            }
+        }
+
+        public static string GetMacVersionFriendlyName()
+        {
+            int minor = Environment.OSVersion.Version.Minor;
+            int major = 0;
+            int version = 10;
+            string codeName = "";
+
+            // Switch for OSX build numbers, see https://support.apple.com/en-us/HT201260
+            switch(Environment.OSVersion.Version.Major)
+            {
+                case 11:
+                    major = 7;
+                    codeName = "Lion";
+                    break;
+                case 12:
+                    major = 8;
+                    codeName = "Mountain Lion";
+                    break;
+                case 13:
+                    major = 9;
+                    codeName = "Mavericks";
+                    break;
+                case 14:
+                    major = 10;
+                    codeName = "Yosemite";
+                    break;
+                case 15:
+                    major = 11;
+                    codeName = "El Capitan";
+                    break;
+                default:
+                    // lets take a guess and follow the pattern
+                    major = Environment.OSVersion.Version.Major - 4;
+                    break;
+            }
+
+            return $"Mac OS X {version}.{major}.{minor}";
+        }
+
         /// <summary>
         /// Converts a Windows <see cref="Environment.OSVersion"/> version to 
         /// the corresponding friendly name release number
