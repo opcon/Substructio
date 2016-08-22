@@ -37,6 +37,8 @@ namespace Substructio.GUI
         public IGameSettings GameSettings;
 
         public FontLibrary GameFontLibrary;
+        
+        public bool ExitRequested { get; private set; } = false;
 
         /// <summary>
         /// The default Constructor.
@@ -171,6 +173,11 @@ namespace Substructio.GUI
             s.Removed = true;
             s.NeedsDisposing = dispose;
             _scenesToRemove.Add(s);
+        }
+        
+        public void Exit()
+        {
+           ExitRequested = true;
         }
 
         public void Dispose()
