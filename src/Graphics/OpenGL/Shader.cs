@@ -14,9 +14,9 @@ namespace Substructio.Graphics.OpenGL
         public string Source { get; private set; }
         public string Name { get; private set; }
 
-        public Shader(string path)
+        public Shader(string path, string version = "")
         {
-            Load(path);
+            Load(path, version);
         }
 
         public Shader(string path, ShaderType type)
@@ -29,14 +29,15 @@ namespace Substructio.Graphics.OpenGL
             Load(source, name, type);
         }
 
-        public void Load(string path, ShaderType type)
+        public void Load(string path, ShaderType type, string version = "")
         {
             var source = IO.ASCIIFileHelper.ReadFileToEnd(path);
+            source = version + "\n" + source;
             var name = Path.GetFileNameWithoutExtension(path);
             Load(source, name, type);
         }
 
-        public void Load(string path)
+        public void Load(string path, string version = "")
         {
             var ext = Path.GetExtension(path);
             ShaderType type;
@@ -55,7 +56,7 @@ namespace Substructio.Graphics.OpenGL
                     throw new Exception("Unknown shader file specified");
             }
 
-            Load(path, type);
+            Load(path, type, version);
         }
 
         public void Load(string source, string name, ShaderType type)
