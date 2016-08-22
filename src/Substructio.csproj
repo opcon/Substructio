@@ -39,6 +39,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="CSCore.dll.config">
+      <Paket>True</Paket>
+    </Content>
     <Content Include="OpenTK.dll.config">
       <Paket>True</Paket>
     </Content>
@@ -108,6 +111,14 @@
     </When>
   </Choose>
   <Import Project="..\packages\SharpFont\build\$(__paket__SharpFont_props).props" Condition="Exists('..\packages\SharpFont\build\$(__paket__SharpFont_props).props')" Label="Paket" />
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
+      <PropertyGroup>
+        <__paket__CSCore_props>CSCore</__paket__CSCore_props>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <Import Project="..\packages\CSCore\build\$(__paket__CSCore_props).props" Condition="Exists('..\packages\CSCore\build\$(__paket__CSCore_props).props')" Label="Paket" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -131,7 +142,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="CSCore">
-          <HintPath>..\packages\CSCore\lib\net35\CSCore.dll</HintPath>
+          <HintPath>..\packages\CSCore\lib\net40\CSCore.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
