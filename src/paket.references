@@ -5,6 +5,6 @@ Gwen.Renderer.OpenTK
 HUSL
 OpenTK.Next
 QuickFont.Desktop
-SharpFont
+SharpFont import_targets: false
 SharpFont.Dependencies
 Splat

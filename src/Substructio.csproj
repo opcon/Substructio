@@ -105,14 +105,6 @@
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <PropertyGroup>
-        <__paket__SharpFont_props>SharpFont</__paket__SharpFont_props>
-      </PropertyGroup>
-    </When>
-  </Choose>
-  <Import Project="..\packages\SharpFont\build\$(__paket__SharpFont_props).props" Condition="Exists('..\packages\SharpFont\build\$(__paket__SharpFont_props).props')" Label="Paket" />
-  <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
-      <PropertyGroup>
         <__paket__CSCore_props>CSCore</__paket__CSCore_props>
       </PropertyGroup>
     </When>
