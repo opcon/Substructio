@@ -1,0 +1,10 @@
+version: 1.0.{build}-appveyor
+image: Visual Studio 2015
+configuration:
+- Debug
+- Release
+build:
+  parallel: true
+  verbosity: minimal
+build_script:
+  - cmd: .\build.cmd mode=%CONFIGURATION%

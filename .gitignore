@@ -163,3 +163,9 @@ $RECYCLE.BIN/
 /BeatDetection.vshost.exe.config
 /Substructio/packages.config
 *.csv
+
+# FAKE
+.fake/
+
+# Paket
+paket.exe
