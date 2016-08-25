@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Substructio.Core.Settings
 {
@@ -7,6 +8,7 @@ namespace Substructio.Core.Settings
         object this[string key] { get; set; }
         void Save();
         void Load();
+        Dictionary<string, object> GetAllSettings();
     }
 
     public class NullGameSettings : IGameSettings
@@ -29,6 +31,11 @@ namespace Substructio.Core.Settings
 
         public void Save()
         {
+        }
+
+        public Dictionary<string, object> GetAllSettings()
+        {
+            return null;
         }
     }
 }
