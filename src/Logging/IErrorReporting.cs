@@ -10,6 +10,8 @@ namespace Substructio.Logging
     {
         string ReportError(Exception e);
         string ReportMessage(string message);
+        Task<string> ReportErrorAsync(Exception e);
+        Task<string> ReportMessageAsync(string message);
     }
 
     public class NullErrorReporting : IErrorReporting
@@ -17,5 +19,9 @@ namespace Substructio.Logging
         public string ReportError(Exception e) { return ""; }
 
         public string ReportMessage(string message) { return ""; }
+
+        public Task<string> ReportErrorAsync(Exception e) { return new Task<string>(() => ""); }
+
+        public Task<string> ReportMessageAsync(string message) { return new Task<string>(() => ""); }
     }
 }
