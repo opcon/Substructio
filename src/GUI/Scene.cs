@@ -5,27 +5,18 @@ namespace Substructio.GUI
 {
     public abstract class Scene : IDisposable
     {
-        public bool Exclusive;
-        public bool Loaded;
+        public bool Exclusive = false;
+        public bool Loaded = false;
         public SceneManager SceneManager;
         public Scene ParentScene;
-        public bool Visible;
-        public bool Removed;
+        public bool Visible = true;
+        public bool Removed = false;
+        public bool Focused = false;
 
         public int WindowWidth {get { return SceneManager.Width; }}
         public int WindowHeight {get { return SceneManager.Height; }}
 
         public bool NeedsDisposing = false; 
-
-        /// <summary>
-        /// The default Constructor.
-        /// </summary>
-        public Scene()
-        {
-            Visible = true;
-            Exclusive = false;
-            Removed = false;
-        }
 
         /// <summary>
         /// Load resources here
@@ -64,5 +55,15 @@ namespace Substructio.GUI
         /// Unload and shutdown screen here
         /// </summary>
         public abstract void Dispose();
+
+        /// <summary>
+        /// This method is called when the scene enters focus
+        /// </summary>
+        public abstract void EnterFocus();
+
+        /// <summary>
+        /// This method is called when the scene exits focus
+        /// </summary>
+        public abstract void ExitFocus();
     }
 }
