@@ -108,17 +108,34 @@ namespace Substructio.GUI
                     if (SceneList[i].Removed) continue;
                     if (!InputSceneFound && SceneList[i].Visible)
                     {
+                        if (!SceneList[i].Focused)
+                        {
+                            SceneList[i].Focused = true;
+                            SceneList[i].EnterFocus();
+                        }
                         SceneList[i].Update(time, true);
                         InputSceneFound = true;
                     }
                     else
                     {
+                        if (SceneList[i].Focused)
+                        {
+                            SceneList[i].Focused = false;
+                            SceneList[i].ExitFocus();
+                        }
                         SceneList[i].Update(time);
                     }
                 }
             }
             else
+            {
+                if (!excl.Focused)
+                {
+                    excl.Focused = true;
+                    excl.EnterFocus();
+                }
                 excl.Update(time, true);
+            }
             InputSceneFound = false;
         }
 
@@ -172,6 +189,8 @@ namespace Substructio.GUI
         {
             s.Removed = true;
             s.NeedsDisposing = dispose;
+            s.Focused = false;
+            s.ExitFocus();
             _scenesToRemove.Add(s);
         }
         

@@ -15,6 +15,8 @@ namespace Substructio.Core
 
         public static Dictionary<Key, KeyRepeatSettings> RepeatingKeys = new Dictionary<Key, KeyRepeatSettings>();
 
+        public static Dictionary<Key, Key> KeyRemappings = new Dictionary<Key, Key>();
+
         public static List<MouseButton> ReleasedButtons = new List<MouseButton>();
         public static List<MouseButton> CurrentButtons = new List<MouseButton>();
         public static List<MouseButton> PressedButtons = new List<MouseButton>();
@@ -44,28 +46,46 @@ namespace Substructio.Core
 
         public static void KeyDown(KeyboardKeyEventArgs e)
         {
-            if (Focused) {
+            if (Focused) 
+            {
+                HandleKeyDown(e.Key);
+                var remappedKey = RemapKey(e.Key);
+                if (remappedKey != e.Key)
+                    HandleKeyDown(remappedKey);
+            }
+        }
 
-                if (!NewKeys.Contains(e.Key) && !CurrentKeys.Contains(e.Key))
-                {
-                    NewKeys.Add(e.Key);
-                }
-                //NewKeys.Add(e.Key);
-                if (!CurrentKeys.Contains(e.Key)) {
-                    CurrentKeys.Add(e.Key);
-                }
+        private static void HandleKeyDown(Key key)
+        {
+            if (!NewKeys.Contains(key) && !CurrentKeys.Contains(key))
+            {
+                NewKeys.Add(key);
+            }
+            if (!CurrentKeys.Contains(key)) 
+            {
+                CurrentKeys.Add(key);
             }
         }
 
         public static void KeyUp(KeyboardKeyEventArgs e)
         {
-            if (Focused) {
-                if (CurrentKeys.Contains(e.Key)) {
-                    CurrentKeys.Remove(e.Key);
-                }
-                if (!ReleasedKeys.Contains(e.Key))
-                    ReleasedKeys.Add(e.Key);
+            if (Focused) 
+            {
+                HandleKeyUp(e.Key);
+                var remappedKey = RemapKey(e.Key);
+                if (remappedKey != e.Key)
+                    HandleKeyUp(remappedKey);
             }
+        }
+
+        private static void HandleKeyUp(Key key)
+        {
+            if (CurrentKeys.Contains(key)) 
+            {
+                CurrentKeys.Remove(key);
+            }
+            if (!ReleasedKeys.Contains(key))
+                ReleasedKeys.Add(key);
         }
 
         public static void MouseDown(MouseButtonEventArgs e)
@@ -165,6 +185,9 @@ namespace Substructio.Core
             }
         }
 
+        private static Key RemapKey(Key oldKey)
+            => KeyRemappings.ContainsKey(oldKey) ? RemapKey(KeyRemappings[oldKey]) : oldKey;
+
         private static void UpdateGUIInputs()
         {
             foreach (OpenTKAlternative gInput in _guiInputDevices)
@@ -207,9 +230,6 @@ namespace Substructio.Core
             MouseDelta = Vector2.Subtract(MouseXY, MousePreviousXY);
             HasMouseMoved = true;
         }
-
-
-        public static Key[] Letters = { Key.A, Key.B, Key.C, Key.D, Key.E, Key.F, Key.G };
 	}
 
     public class KeyRepeatSettings

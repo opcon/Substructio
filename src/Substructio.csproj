@@ -199,7 +199,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="SharpFont">
-          <HintPath>..\packages\SharpFont\lib\net20\SharpFont.dll</HintPath>
+          <HintPath>..\packages\SharpFont\lib\net45\SharpFont.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
