@@ -53,7 +53,7 @@ namespace Substructio.Graphics.OpenGL
                     type = ShaderType.GeometryShader;
                     break;
                 default:
-                    throw new Exception("Unknown shader file specified");
+                    throw new ShaderTypeException(String.Format("Shader type could not be detected from filename {0}", path));
             }
 
             Load(path, type, version);
@@ -68,16 +68,28 @@ namespace Substructio.Graphics.OpenGL
             Create();
             GL.ShaderSource(ID, Source);
             GL.CompileShader(ID);
+
+            // Check that shader compiled correctly
+            int isCompiled = 0;
+            GL.GetShader(ID, ShaderParameter.CompileStatus, out isCompiled);
+
+            if (isCompiled == 0)
+            {
+                // Shader compilation failed, throw new exception with log
+                string info;
+                GL.GetShaderInfoLog(ID, out info);
+                throw new ShaderCompilationException("Shader compilation failed", info, type, source);
+            }
         }
 
         public override void Bind()
         {
-            throw new Exception("Shaders can not be bound");
+            throw new InvalidOperationException("Shaders can not be bound");
         }
 
         public override void UnBind()
         {
-            throw new Exception("Shaders can not be bound");
+            throw new InvalidOperationException("Shaders can not be bound");
         }
 
         public override void Dispose()

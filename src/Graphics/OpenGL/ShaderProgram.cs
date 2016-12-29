@@ -34,9 +34,18 @@ namespace Substructio.Graphics.OpenGL
                 AttachShader(shader);
             }
             GL.LinkProgram(ID);
-            string info;
-            GL.GetProgramInfoLog(ID, out info);
-            if (!String.IsNullOrWhiteSpace(info)) throw new Exception(info);
+
+            // Check that program linked correctly
+            int isLinked = 0;
+            GL.GetProgram(ID, GetProgramParameterName.LinkStatus, out isLinked);
+
+            if (isLinked == 0)
+            {
+                // Program linking failed, throw new exception with log
+                string info;
+                GL.GetProgramInfoLog(ID, out info);
+                throw new ShaderProgramLinkException("Linking program failed", info, string.Join(",", shaders.Select(s => string.Format("{0}:{1}", s.ShaderType, s.Name))));
+            }
         }
 
 
