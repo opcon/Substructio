@@ -8,6 +8,7 @@ namespace Substructio.Logging
 {
     public interface IErrorReporting
     {
+        void AddTags(IDictionary<string, string> tags);
         string ReportError(Exception e);
         string ReportMessage(string message);
         Task<string> ReportErrorAsync(Exception e);
@@ -16,6 +17,8 @@ namespace Substructio.Logging
 
     public class NullErrorReporting : IErrorReporting
     {
+        public void AddTags(IDictionary<string, string> tags) { }
+
         public string ReportError(Exception e) { return ""; }
 
         public string ReportMessage(string message) { return ""; }
