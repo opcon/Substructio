@@ -75,6 +75,7 @@
     <Compile Include="Core\ValueWrapper.cs" />
     <Compile Include="Graphics\OpenGL\BindeableObject.cs" />
     <Compile Include="Graphics\OpenGL\Buffer.cs" />
+    <Compile Include="Graphics\OpenGL\Exceptions.cs" />
     <Compile Include="Graphics\OpenGL\ShaderProgram.cs" />
     <Compile Include="Graphics\OpenGL\Shader.cs" />
     <Compile Include="Graphics\OpenGL\VertexArray.cs" />
@@ -146,7 +147,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="Gwen">
-          <HintPath>..\packages\Gwen\lib\net40\Gwen.dll</HintPath>
+          <HintPath>..\packages\Gwen\lib\net45\Gwen.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -157,7 +158,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="Gwen.Renderer.OpenTK">
-          <HintPath>..\packages\Gwen.Renderer.OpenTK\lib\net40\Gwen.Renderer.OpenTK.dll</HintPath>
+          <HintPath>..\packages\Gwen.Renderer.OpenTK\lib\net45\Gwen.Renderer.OpenTK.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -179,7 +180,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="OpenTK">
-          <HintPath>..\packages\OpenTK.Next\lib\net20\OpenTK.dll</HintPath>
+          <HintPath>..\packages\OpenTK\lib\net20\OpenTK.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
@@ -190,7 +191,7 @@
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1' Or $(TargetFrameworkVersion) == 'v4.6.2')">
       <ItemGroup>
         <Reference Include="QuickFont">
-          <HintPath>..\packages\QuickFont.Desktop\lib\net40\QuickFont.dll</HintPath>
+          <HintPath>..\packages\QuickFont.Desktop\lib\net45\QuickFont.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

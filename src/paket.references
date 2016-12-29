@@ -3,7 +3,7 @@ CSCore
 Gwen
 Gwen.Renderer.OpenTK
 HUSL
-OpenTK.Next
+OpenTK
 QuickFont.Desktop
 SharpFont import_targets: false
 SharpFont.Dependencies
