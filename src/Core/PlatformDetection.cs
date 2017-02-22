@@ -102,6 +102,10 @@ namespace Substructio.Core
                     major = 11;
                     codeName = "El Capitan";
                     break;
+                case 16:
+                    major = 12;
+                    codeName = "Sierra";
+                    break;
                 default:
                     // lets take a guess and follow the pattern
                     major = Environment.OSVersion.Version.Major - 4;
